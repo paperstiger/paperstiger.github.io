@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>trajOptLib.utility &mdash; trajoptlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> trajoptlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">trajoptlib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>trajOptLib.utility</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for trajOptLib.utility</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># vim:fenc=utf-8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018 Gao Tang &lt;gt70@duke.edu&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under terms of the MIT license.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">utility.py</span>
+
+<span class="sd">Collection of utility functions such as solution parsing and showing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span><span class="p">,</span> <span class="n">CubicSpline</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">pld</span>
+
+
+<div class="viewcode-block" id="parseX"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.parseX">[docs]</a><span class="k">def</span> <span class="nf">parseX</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">dimx</span><span class="p">,</span> <span class="n">dimu</span><span class="p">,</span> <span class="n">dimp</span><span class="p">,</span> <span class="n">uset0</span><span class="p">,</span> <span class="n">usetf</span><span class="p">,</span> <span class="n">setfinal</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse the solution into a dict of time, state, control, parameter.</span>
+
+<span class="sd">    :param x: ndarray, solution found by SNOPT</span>
+<span class="sd">    :param N, dimx, dimu, dimp: discretization of the problem</span>
+<span class="sd">    :param uset0, usetf: float/array like, specification of initial and final time</span>
+<span class="sd">    :param setfinal: if we set the final element of u/p the same with second last</span>
+<span class="sd">    :returns: a dictionary of keys &#39;t&#39;, &#39;x&#39;, &#39;u&#39;, &#39;p&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">uset0</span><span class="p">):</span>
+        <span class="n">fixt0</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fixt0</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">usetf</span><span class="p">):</span>
+        <span class="n">fixtf</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fixtf</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">lenX</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">dimx</span> <span class="o">+</span> <span class="n">N</span> <span class="o">*</span> <span class="n">dimu</span> <span class="o">+</span> <span class="n">N</span> <span class="o">*</span> <span class="n">dimp</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">fixt0</span> <span class="o">+</span> <span class="n">fixtf</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">lenX</span>
+    <span class="c1"># parse state</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">N</span><span class="o">*</span><span class="n">dimx</span><span class="p">],</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dimx</span><span class="p">))</span>
+    <span class="n">ctrl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">N</span><span class="o">*</span><span class="n">dimx</span><span class="p">:</span><span class="n">N</span><span class="o">*</span><span class="p">(</span><span class="n">dimx</span><span class="o">+</span><span class="n">dimu</span><span class="p">)],</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dimu</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">setfinal</span><span class="p">:</span>
+        <span class="n">ctrl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctrl</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dimp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">N</span><span class="o">*</span><span class="p">(</span><span class="n">dimx</span><span class="o">+</span><span class="n">dimu</span><span class="p">):</span><span class="n">N</span><span class="o">*</span><span class="p">(</span><span class="n">dimx</span><span class="o">+</span><span class="n">dimp</span><span class="o">+</span><span class="n">dimu</span><span class="p">)],</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dimp</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">setfinal</span><span class="p">:</span>
+            <span class="n">param</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">fixt0</span><span class="p">:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">uset0</span>
+        <span class="k">if</span> <span class="n">fixtf</span><span class="p">:</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">usetf</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fixtf</span><span class="p">:</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">usetf</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">tgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">tf</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">tgrid</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="n">ctrl</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="n">param</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="showSol"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.showSol">[docs]</a><span class="k">def</span> <span class="nf">showSol</span><span class="p">(</span><span class="n">solDict</span><span class="p">,</span> <span class="n">xsplit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">usplit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psplit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot the parsed solution.</span>
+
+<span class="sd">    :param solDict: dict, returned from solParse; or a list of such dict. Then they are compared</span>
+<span class="sd">    :param xsplit: if state space is large, this splits it into several images it&#39;s a list of int like (3, 6). None means no split</span>
+<span class="sd">    :param usplit: similar to xsplit, apply for control</span>
+<span class="sd">    :param psplit: similar to xsplit, apply for parameter</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solDict</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s1">&#39;phases&#39;</span> <span class="ow">in</span> <span class="n">solDict</span><span class="p">:</span>
+        <span class="n">mul_seg_mode</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mul_seg_mode</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solDict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">plott</span> <span class="o">=</span> <span class="p">[</span><span class="n">solDict</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]]</span>
+        <span class="n">plotx</span> <span class="o">=</span> <span class="n">solDict</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">plotu</span> <span class="o">=</span> <span class="n">solDict</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">solDict</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plotp</span> <span class="o">=</span> <span class="n">solDict</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plotp</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plott</span> <span class="o">=</span> <span class="p">[</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solDict</span><span class="p">]</span>
+        <span class="n">plotx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solDict</span><span class="p">])</span>
+        <span class="n">plotu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solDict</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">solDict</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plotp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solDict</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plotp</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">cmpSplit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">split</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">split</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">axes</span> <span class="o">=</span> <span class="n">pld</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nsplit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+            <span class="n">ind0</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsplit</span><span class="p">):</span>
+                <span class="n">indf</span> <span class="o">=</span> <span class="n">ind0</span> <span class="o">+</span> <span class="n">split</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">axes</span> <span class="o">=</span> <span class="n">pld</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">var</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">ind0</span><span class="p">:</span><span class="n">indf</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+                <span class="n">ind0</span> <span class="o">=</span> <span class="n">indf</span>
+
+    <span class="c1"># plot x</span>
+    <span class="n">cmpSplit</span><span class="p">(</span><span class="n">plott</span><span class="p">,</span> <span class="n">plotx</span><span class="p">,</span> <span class="n">xsplit</span><span class="p">)</span>
+    <span class="c1"># plot u</span>
+    <span class="n">cmpSplit</span><span class="p">(</span><span class="n">plott</span><span class="p">,</span> <span class="n">plotu</span><span class="p">,</span> <span class="n">usplit</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plotp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cmpSplit</span><span class="p">(</span><span class="n">plott</span><span class="p">,</span> <span class="n">plotp</span><span class="p">,</span> <span class="n">psplit</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="randomGenInBound"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.randomGenInBound">[docs]</a><span class="k">def</span> <span class="nf">randomGenInBound</span><span class="p">(</span><span class="n">bds</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Randomly generate a vector within bounds / [-1, 1]</span>
+
+<span class="sd">    :param bds: list/tuple of ndarray, the bounds of variable</span>
+<span class="sd">    :param n: if bds are None, this is for determining size of vector</span>
+<span class="sd">    :return x: ndarray, the random generated variable</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bds</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">bds</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">bds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="n">bds</span>
+    <span class="k">if</span> <span class="n">lb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">lb</span><span class="p">[</span><span class="n">lb</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1e19</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">ub</span><span class="p">[</span><span class="n">ub</span> <span class="o">&gt;</span> <span class="mf">1e19</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ub</span> <span class="o">-</span> <span class="n">lb</span><span class="p">)</span> <span class="o">+</span> <span class="n">lb</span>
+    <span class="k">elif</span> <span class="n">lb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">ub</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">ub</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">ub</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">lb</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="checkInBounds"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.checkInBounds">[docs]</a><span class="k">def</span> <span class="nf">checkInBounds</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check the position of variables in a bound.</span>
+
+<span class="sd">    Basically, it returns the position of actual value in the bounds [-1, 1].</span>
+<span class="sd">    If both sides are bounded, it simply calculate this value.</span>
+<span class="sd">    If one side is bounded, it check if value if within certain threshold with the bound</span>
+<span class="sd">    Unbounded variables shall always return 0, the same applies to equality-bounded variables.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="n">bds</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">ub</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">lb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+        <span class="n">ub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span>
+    <span class="n">lenbd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="n">lenbd</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lenbd</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">lenbd</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lenbd</span><span class="p">):</span>
+        <span class="n">lb_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">lb</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">ub_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">ub</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">lb_</span> <span class="o">&lt;=</span> <span class="n">ub_</span>
+        <span class="k">if</span> <span class="n">lb_</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">1e19</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ub_</span> <span class="o">&gt;</span> <span class="mf">1e19</span><span class="p">:</span>
+                <span class="n">position</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">position</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ub_</span> <span class="o">-</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ub_</span> <span class="o">&gt;</span> <span class="mf">1e19</span><span class="p">:</span>
+                <span class="n">position</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">lb_</span> <span class="o">+</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ub_</span> <span class="o">&gt;</span> <span class="n">lb_</span><span class="p">:</span>
+                <span class="n">position</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">lb_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ub_</span> <span class="o">-</span> <span class="n">lb_</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">position</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">lb_</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">lb_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">position</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">position</span></div>
+
+
+<div class="viewcode-block" id="interp"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.interp">[docs]</a><span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">teval</span><span class="p">,</span> <span class="n">Xeval</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Do interpolation on previous calculated solution.</span>
+
+<span class="sd">    It handles case when t is None, in which case, teval is not used and we use a uniform grid in [0, 1]</span>
+
+<span class="sd">    :param t: array-like, user-specified time stamps</span>
+<span class="sd">    :param X: ndarray, (x, x), variable to be interpolated</span>
+<span class="sd">    :param teval: array-like, where to evaluate for the interpolation</span>
+<span class="sd">    :param Xeval: ndarray, (x, x), where to store the evaluation. It might has more columns than X, in which case we fill higher-order derivative</span>
+<span class="sd">    :param kind: str, interpolation type for scipy.interpolate.interp1d, can be (‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">targetN</span> <span class="o">=</span> <span class="n">Xeval</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">giveN</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Xcol</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">XevalCol</span> <span class="o">=</span> <span class="n">Xeval</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">XevalCol</span> <span class="o">//</span> <span class="n">Xcol</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">teval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">targetN</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">giveN</span><span class="p">)</span>
+    <span class="c1"># construct object</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">interp_</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">Xeval</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">interp_</span><span class="p">(</span><span class="n">teval</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">interp_</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+        <span class="n">Xeval</span><span class="p">[:,</span> <span class="p">:</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">interp_</span><span class="p">(</span><span class="n">teval</span><span class="p">)</span>
+        <span class="n">curind</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">order</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">interp_</span> <span class="o">=</span> <span class="n">interp_</span><span class="o">.</span><span class="n">derivative</span><span class="p">()</span>
+            <span class="n">Xeval</span><span class="p">[:,</span> <span class="n">curind</span><span class="o">*</span><span class="n">Xcol</span><span class="p">:</span> <span class="p">(</span><span class="n">curind</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">Xcol</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_</span><span class="p">(</span><span class="n">teval</span><span class="p">)</span>
+            <span class="n">order</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">curind</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="getInf"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.getInf">[docs]</a><span class="k">def</span> <span class="nf">getInf</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return an inf array.</span>
+
+<span class="sd">    :param n: int, size of the array to return, None means scalar</span>
+<span class="sd">    :returns y: the scalar inf or array of inf</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1e20</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1e20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="InfBuilder"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.InfBuilder">[docs]</a><span class="k">class</span> <span class="nc">InfBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to help us return infinity&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="InfBuilder.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.InfBuilder.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ninf</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">inf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inf</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ninf</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inf</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ninf</span><span class="p">[:</span><span class="o">-</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneBuilder"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.OneBuilder">[docs]</a><span class="k">class</span> <span class="nc">OneBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to return array of 1&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="OneBuilder.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.OneBuilder.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ones</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ones</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZeroBuilder"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.ZeroBuilder">[docs]</a><span class="k">class</span> <span class="nc">ZeroBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to return array of 1&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ZeroBuilder.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.utility.ZeroBuilder.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zeros</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">zeros</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gao Tang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>trajOptLib.classBuilder &mdash; trajoptlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> trajoptlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">trajoptlib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>trajOptLib.classBuilder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for trajOptLib.classBuilder</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># vim:fenc=utf-8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018 Gao Tang &lt;gt70@duke.edu&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under terms of the MIT license.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">classBuilder.py</span>
+
+<span class="sd">This module provides versatile functions that helps user build up classes quickly.</span>
+<span class="sd">Specifically, it allows fast prototype of problems.</span>
+<span class="sd">However, the users have to write functions that are autograd compatible.</span>
+<span class="sd">Most basically, import autograd.numpy instead of numpy</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">autograd</span> <span class="k">import</span> <span class="n">jacobian</span><span class="p">,</span> <span class="n">grad</span>
+<span class="kn">from</span> <span class="nn">.trajOptBase</span> <span class="k">import</span> <span class="n">system</span><span class="p">,</span> <span class="n">daeSystem</span><span class="p">,</span> <span class="n">baseFun</span><span class="p">,</span> <span class="n">addX</span>
+<span class="kn">from</span> <span class="nn">.trajOptBase</span> <span class="k">import</span> <span class="n">nonLinearPointConstr</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">snoptConfig</span><span class="p">,</span> <span class="n">solver</span><span class="p">,</span> <span class="n">probFun</span><span class="p">,</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="blockIndex"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.blockIndex">[docs]</a><span class="k">def</span> <span class="nf">blockIndex</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;For a matrix block, we return the index of row and columns.</span>
+
+<span class="sd">    For a matrix we choose a block using the upper left corner positioned </span>
+<span class="sd">    at (i, j) and size (row, col). Each element of the block has row and </span>
+<span class="sd">    col index, they are returned in two arrays. The order controls we use</span>
+<span class="sd">    row or column major order</span>
+
+<span class="sd">    For example, blockIndex(1, 3, 2, 3, &#39;C&#39;) returns </span>
+<span class="sd">    (array([1, 1, 1, 2, 2, 2]), array([3, 4, 5, 3, 4, 5]))</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    i: int</span>
+<span class="sd">        the row of the upper left corner</span>
+<span class="sd">    j: int</span>
+<span class="sd">        the column of the upper left corner</span>
+<span class="sd">    rows: int</span>
+<span class="sd">        number of rows of the block</span>
+<span class="sd">    cols: int</span>
+<span class="sd">        number of columns of the block</span>
+<span class="sd">    order: char</span>
+<span class="sd">        (&#39;C&#39;/&#39;F&#39;) if we return row or column major</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">rows</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cols</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">rows</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cols</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cols</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cols</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported order&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span></div>
+
+
+<div class="viewcode-block" id="systemWrapper"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.systemWrapper">[docs]</a><span class="k">class</span> <span class="nc">systemWrapper</span><span class="p">(</span><span class="n">system</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class takes a function and returns a system.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="systemWrapper.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.systemWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fun : callable</span>
+<span class="sd">            a function that implements \dot{x}=f(t, x, u, p, \*args) but does not depend on t</span>
+<span class="sd">        nx : int</span>
+<span class="sd">            length of x</span>
+<span class="sd">        nu : int</span>
+<span class="sd">            length of u</span>
+<span class="sd">        np : int</span>
+<span class="sd">            length of p</span>
+<span class="sd">        args : kwargs</span>
+<span class="sd">            additional parameters to function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">system</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">wrapfun</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">nx</span><span class="p">]</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="o">+</span><span class="n">np</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nG</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fun</span> <span class="o">=</span> <span class="n">wrapfun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">wrapfun</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funargs</span> <span class="o">=</span> <span class="n">args</span></div>
+
+<div class="viewcode-block" id="systemWrapper.dyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.systemWrapper.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">xin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fun</span><span class="p">(</span><span class="n">xin</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">funargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span></div>
+
+<div class="viewcode-block" id="systemWrapper.Jdyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.systemWrapper.Jdyn">[docs]</a>    <span class="k">def</span> <span class="nf">Jdyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">xin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fun</span><span class="p">(</span><span class="n">xin</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">funargs</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span><span class="p">(</span><span class="n">xin</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">funargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">G</span></div></div>
+
+
+<div class="viewcode-block" id="daeSystemWrapper"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.daeSystemWrapper">[docs]</a><span class="k">class</span> <span class="nc">daeSystemWrapper</span><span class="p">(</span><span class="n">daeSystem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class takes a function and returns a system.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="daeSystemWrapper.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.daeSystemWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for the problem.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fun : callable</span>
+<span class="sd">            a function that implements f(t, x, u, p, \*args) = 0 but does not depend on t</span>
+<span class="sd">        nx : int</span>
+<span class="sd">            length of x</span>
+<span class="sd">        nu : int</span>
+<span class="sd">            length of u</span>
+<span class="sd">        np : int</span>
+<span class="sd">            length of p</span>
+<span class="sd">        nf : int</span>
+<span class="sd">            length of output of f</span>
+<span class="sd">        args : kwargs</span>
+<span class="sd">            additional parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nG</span> <span class="o">=</span> <span class="n">nf</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np</span><span class="p">)</span>
+        <span class="n">daeSystem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">nG</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">wrapfun</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">nx</span><span class="p">]</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="p">:</span> <span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="o">+</span><span class="n">np</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fun</span> <span class="o">=</span> <span class="n">wrapfun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">wrapfun</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funargs</span> <span class="o">=</span> <span class="n">args</span></div>
+
+<div class="viewcode-block" id="daeSystemWrapper.dyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.daeSystemWrapper.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">needg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override class method&quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fun</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">funargs</span><span class="p">)</span>
+        <span class="n">y</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">out</span>
+        <span class="k">if</span> <span class="n">needg</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">funargs</span><span class="p">)</span>
+            <span class="n">G</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">flat</span>
+            <span class="k">if</span> <span class="n">rec</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[:],</span> <span class="n">col</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">blockIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="nonLinearPointConstrWrapper"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.nonLinearPointConstrWrapper">[docs]</a><span class="k">class</span> <span class="nc">nonLinearPointConstrWrapper</span><span class="p">(</span><span class="n">nonLinearPointConstr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class takes a function and wrap it as a point constraint.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nonLinearPointConstrWrapper.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.nonLinearPointConstrWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">nG</span> <span class="o">=</span> <span class="n">nc</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np</span><span class="p">)</span>
+        <span class="n">nonLinearPointConstr</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="n">nG</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">wrapfun</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">nx</span><span class="p">]</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="n">nu</span><span class="o">+</span><span class="n">np</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fun</span> <span class="o">=</span> <span class="n">wrapfun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">wrapfun</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">()</span></div>
+
+<div class="viewcode-block" id="nonLinearPointConstrWrapper.__callg__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.classBuilder.nonLinearPointConstrWrapper.__callg__">[docs]</a>    <span class="k">def</span> <span class="nf">__callg__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">needg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;override a function&quot;&quot;&quot;</span>
+        <span class="c1"># we will assume first value is useless</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fun</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">F</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">if</span> <span class="n">needg</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gfun</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">G</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">g</span>
+            <span class="k">if</span> <span class="n">rec</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[:],</span> <span class="n">col</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">blockIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gao Tang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

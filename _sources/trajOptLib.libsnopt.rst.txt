@@ -1,0 +1,10 @@
+trajOptLib.libsnopt package
+=====================
+
+Module contents
+---------------
+
+.. automodule:: trajOptLib.libsnopt
+    :members:
+    :undoc-members:
+    :show-inheritance:

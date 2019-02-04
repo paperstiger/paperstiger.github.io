@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>trajOptLib.trajOptBase &mdash; trajoptlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> trajoptlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">trajoptlib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>trajOptLib.trajOptBase</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for trajOptLib.trajOptBase</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># vim:fenc=utf-8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018 Gao Tang &lt;gt70@duke.edu&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under terms of the MIT license.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">trajOptBase.py</span>
+
+<span class="sd">Classes ready to be used for trajectory optimization.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">coo_matrix</span>
+
+
+<div class="viewcode-block" id="system"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.system">[docs]</a><span class="k">class</span> <span class="nc">system</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Description of the dynamical system.</span>
+
+<span class="sd">    To define a dynamical system, we need to specify dimension of state, control, and parameter.</span>
+<span class="sd">    Optionally, integration approach can be selected.</span>
+<span class="sd">    This function should be inherited and users are supposed to override dyn/Jdyn functions.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">odes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RK4&#39;</span><span class="p">,</span> <span class="s1">&#39;Dis&#39;</span><span class="p">,</span> <span class="s1">&#39;Euler&#39;</span><span class="p">,</span> <span class="s1">&#39;BackEuler&#39;</span><span class="p">]</span>
+<div class="viewcode-block" id="system.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.system.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ode</span><span class="o">=</span><span class="s1">&#39;RK4&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for class.</span>
+
+<span class="sd">        :param nx: int, dimension of state variable</span>
+<span class="sd">        :param nu: int, dimension of control variable</span>
+<span class="sd">        :param np: int, dimension of additional parameter</span>
+<span class="sd">        :param ode: str, integration approach. Default RK4, options: Dis, Euler, BackEuler</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="n">nu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span>
+        <span class="k">assert</span> <span class="n">ode</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">odes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ode</span> <span class="o">=</span> <span class="n">ode</span></div>
+
+<div class="viewcode-block" id="system.setOde"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.system.setOde">[docs]</a>    <span class="k">def</span> <span class="nf">setOde</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set ode approach.</span>
+
+<span class="sd">        :param method: str, name of ode approach.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">odes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ode</span> <span class="o">=</span> <span class="n">method</span></div>
+
+<div class="viewcode-block" id="system.dyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.system.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dynamics function without gradient information.</span>
+
+<span class="sd">        It has to be overriden.</span>
+
+<span class="sd">        :param t: float, time when evaluating system dynamics</span>
+<span class="sd">        :param x: np.ndarray, (nx,) state variable</span>
+<span class="sd">        :param u: np.ndarray, (nu,) control variable</span>
+<span class="sd">        :param p: np.ndarray, (np,) additional optimizing variable</span>
+<span class="sd">        :param h: float, used for discretized system. Integration step size</span>
+<span class="sd">        :return: either dotx or x_k+1 depends on system type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="system.Jdyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.system.Jdyn">[docs]</a>    <span class="k">def</span> <span class="nf">Jdyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dynamics function with Jacobian return.</span>
+
+<span class="sd">        It has to be overriden.</span>
+
+<span class="sd">        :param t, x, u, p, h: see dyn</span>
+<span class="sd">        :returns: y: ndarray, either dotx or x_k+1</span>
+<span class="sd">        :returns: J: ndarray/spmatrix, returning Jacobian of this function evaluation</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="daeSystem"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.daeSystem">[docs]</a><span class="k">class</span> <span class="nc">daeSystem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A DAE system.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="daeSystem.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.daeSystem.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">nG</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for the problem.</span>
+
+<span class="sd">        For a dae system described by :math `f(t, q, \dot{q}, \ddot{q}, u, p)=0`, nx=3dim(q), nf=dim(q).</span>
+<span class="sd">        If it is described by :math `f(t, q, \dot{q}, u, p)=0`, nx=2dim(q), nf=dim(q).</span>
+<span class="sd">        We define as order the highest time derivative of state q. Keeping this in mind, nf always equals dim(q),</span>
+<span class="sd">        nx = (1+order)dim(q), nDefect = 2*order*nf</span>
+<span class="sd">        Compared with system class, system dynamics can be given implicitly.</span>
+<span class="sd">        For different order, we are gonna have different number of defect constraints and sizes.</span>
+
+<span class="sd">        :param nx: int, dimension of states, it might also include acceleration</span>
+<span class="sd">        :param nu: int, dimension of control</span>
+<span class="sd">        :param np: int, dimension of parameter</span>
+<span class="sd">        :param nf: int, dimension of dae system</span>
+<span class="sd">        :param nG: int, nnz of Jacobian</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="n">nu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nf</span> <span class="o">=</span> <span class="n">nf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nG</span> <span class="o">=</span> <span class="n">nG</span>
+        <span class="k">if</span> <span class="n">nx</span> <span class="o">%</span> <span class="n">nf</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;nx \% nf is not zero, make sure problem is defined correctly.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">//</span> <span class="n">nf</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># this is useful for detecting size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="daeSystem.dyn"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.daeSystem.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">needg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implementation of system dynamics expressed in a dae.</span>
+
+<span class="sd">        It evaluates system dynamics like f(t, q, dq, ddq, p, u) = 0 and calculate gradients if necessary.</span>
+<span class="sd">        :param t: float, time of evaluation</span>
+<span class="sd">        :param x: ndarray, (nx,) state variable, it might contain q, dq, ddq or in more general case q and dq.</span>
+<span class="sd">        :param u: ndarray, (nu,) control variable</span>
+<span class="sd">        :param p: ndarray, (np,) parameter used such as reaction force from ground</span>
+<span class="sd">        :param y: ndarray, (nq,) this constraint function. It is evaluated here.</span>
+<span class="sd">        :param G, row, col: ndarray, (nG,) gradient of this constraints, row and col index</span>
+<span class="sd">        :param rec: bool, if we need to write row and col</span>
+<span class="sd">        :param needg: bool, if we have to evaluate gradients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="daeSystem.findTimeGradient"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.daeSystem.findTimeGradient">[docs]</a>    <span class="k">def</span> <span class="nf">findTimeGradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect if gradient is time related.&quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">catx</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">]</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">catx</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">]</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">catx</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nf</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="baseFun"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.baseFun">[docs]</a><span class="k">class</span> <span class="nc">baseFun</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for functions, including both objective and constraint.</span>
+
+<span class="sd">    This function should be inherited to define your own functions.</span>
+<span class="sd">    A function with user supplied gradient information, nx, nf, ng should be set.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">]</span>
+<div class="viewcode-block" id="baseFun.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.baseFun.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">gradmode</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for base function</span>
+
+<span class="sd">        :param nx: int, number of variables input</span>
+<span class="sd">        :param nf: int, number of response output</span>
+<span class="sd">        :param gradmode: string, mode of gradient</span>
+<span class="sd">        :param ng: int, used only when gradmode == &#39;user&#39;, means number of nnz gradients</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nf</span> <span class="o">=</span> <span class="n">nf</span>
+        <span class="k">if</span> <span class="n">gradmode</span> <span class="o">==</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nG</span> <span class="o">=</span> <span class="n">ng</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">gradmode</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradmode</span> <span class="o">=</span> <span class="n">gradmode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="baseFun.__callf__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.baseFun.__callf__">[docs]</a>    <span class="k">def</span> <span class="nf">__callf__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function call with no gradient information.</span>
+
+<span class="sd">        :param x: ndarray, input to the function</span>
+<span class="sd">        :param F: ndarray, output of the function which is written inplace</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="baseFun.__callg__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.baseFun.__callg__">[docs]</a>    <span class="k">def</span> <span class="nf">__callg__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">needg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function call with no gradient information.</span>
+
+<span class="sd">        :param x: ndarray, input to the function</span>
+<span class="sd">        :param F: ndarray, output of the function which is written inplace</span>
+<span class="sd">        :param G: ndarray, gradient of the function in sparse form which stores the values</span>
+<span class="sd">        :param row: ndarray of int, stores the rows of the sparse gradient matrix</span>
+<span class="sd">        :param col: ndarray of int, stores the columns of the sparse gradient matrix</span>
+<span class="sd">        :param rec: bool, determine if we write values to row and col</span>
+<span class="sd">        :param needg: bool, determine if we need to calculate gradient and write to G</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="baseFun.findTimeGradient"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.baseFun.findTimeGradient">[docs]</a>    <span class="k">def</span> <span class="nf">findTimeGradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradmode</span><span class="p">,</span> <span class="s1">&#39;Grad mode is off&#39;</span>
+        <span class="n">tmpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nf</span><span class="p">)</span>
+        <span class="n">tmpG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">)</span>
+        <span class="n">tmprow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">tmpcol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nG</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__callg__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tmpy</span><span class="p">,</span> <span class="n">tmpG</span><span class="p">,</span> <span class="n">tmprow</span><span class="p">,</span> <span class="n">tmpcol</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tmpcol</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># the columns from time</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="addX"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.addX">[docs]</a><span class="k">class</span> <span class="nc">addX</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A description of additional optimizing parameter.</span>
+
+<span class="sd">    It is intended to be used if the optimal control has like point constraint.</span>
+<span class="sd">    In this class the user has to supply the size and bounds of those variables.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="addX.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.addX.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor of this class.</span>
+
+<span class="sd">        :param n: int, length of this variable.</span>
+<span class="sd">        :param lb: ndarray, (n,) lower bounds for those variables. None means no bound</span>
+<span class="sd">        :param ub: ndarray, (n,) uppere bounds for those variables. None means no bound</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="n">lb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="mf">1e20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_objectWithMatrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An abstract class that basically has a matrix in it.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">findTimeGradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For a matrix, find column 0 indice.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">coo_matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">col</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># the columns from time</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeindex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autonomous</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="linearObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearObj">[docs]</a><span class="k">class</span> <span class="nc">linearObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for directly add linear objective function over the entire decision variable.</span>
+
+<span class="sd">    It serves for objective of form :math:`y=Ax` where :math:`x` is the collected long vector.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="linearObj.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for linear objective function using A</span>
+
+<span class="sd">        :param A: np.ndarray or spmatrix, must of size equal to nsol</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">A</span></div></div>
+
+
+<div class="viewcode-block" id="linearPointObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearPointObj">[docs]</a><span class="k">class</span> <span class="nc">linearPointObj</span><span class="p">(</span><span class="n">_objectWithMatrix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for directly add linear objective function over the entire decision variable.</span>
+
+<span class="sd">    It serves for objective function of the form :math:`y=Ax` where :math:`x` is the concatenated vector of state, </span>
+<span class="sd">    control and parameter at a selected index.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="linearPointObj.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearPointObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for linear objective function using A pointwise</span>
+
+<span class="sd">        :param index: int, at which point is objective function evaluated</span>
+<span class="sd">        :param A: np.ndarray or spmatrix, must of size equal to xdim</span>
+<span class="sd">        :param nx: int, dimension of state</span>
+<span class="sd">        :param nu: int, dimension of control</span>
+<span class="sd">        :param np: int, dimension of parameter</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xdim</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np_</span>  <span class="c1"># this x means length of variable at one point, (t, x, u, p)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">xdim</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">xdim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">A</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span></div></div>
+
+
+<div class="viewcode-block" id="nonLinearObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearObj">[docs]</a><span class="k">class</span> <span class="nc">nonLinearObj</span><span class="p">(</span><span class="n">baseFun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for general nonlinear objective function over the entire decision variables.</span>
+
+<span class="sd">    The objective function is basically calculated by calling a nonlinear function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nonLinearObj.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsol</span><span class="p">,</span> <span class="n">gradmode</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for nonlinear objective function.</span>
+
+<span class="sd">        :param nsol: int, length of decision variable</span>
+<span class="sd">        :param gradmode: str, how gradient is provided</span>
+<span class="sd">        :param nG: int, number of nnz of Jacobian</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">baseFun</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsol</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gradmode</span><span class="p">,</span> <span class="n">nG</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="nonLinearPointObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearPointObj">[docs]</a><span class="k">class</span> <span class="nc">nonLinearPointObj</span><span class="p">(</span><span class="n">baseFun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining point objective function.</span>
+
+<span class="sd">    Similar to linear case. A function that takes the concatenated vector at a selected index is used.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nonLinearPointObj.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearPointObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gradmode</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for nonlinear objective function.</span>
+
+<span class="sd">        :param index: int, at which point is objective calculated</span>
+<span class="sd">        :param nx, nu, np: int, dimensions</span>
+<span class="sd">        :param gradmode: str, how gradient is provided</span>
+<span class="sd">        :param nG: int, number of nnz of Jacobian</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xdim</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np</span>
+        <span class="n">baseFun</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdim</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gradmode</span><span class="p">,</span> <span class="n">nG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span></div></div>
+
+
+<div class="viewcode-block" id="lqrObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.lqrObj">[docs]</a><span class="k">class</span> <span class="nc">lqrObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for LQR objective since it is so common. It is treated independently with pathObj.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="lqrObj.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.lqrObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xfbase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xbase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ubase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tfweight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pbase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for LQR objective function.</span>
+
+<span class="sd">        :math:`c=\|x_f-x_{fbase}\|_F + \Sigma (\|x-x_{base}\|_Q + \|u-u_{base}\|_R + \|p-p_{base}\|_P) * h`</span>
+
+<span class="sd">        :param F, Q, R: cost for terminal, path state, path ctrl.</span>
+<span class="sd">        :param xfbase, xbase, ubase: the basis.</span>
+<span class="sd">        :param P: might be None if we do not penalize p</span>
+<span class="sd">        :param pbase: might be None if we do not penalize p</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">F</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">F</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">xfbase</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">([])</span>
+        <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">Q</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">xbase</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">([])</span>
+        <span class="k">if</span> <span class="n">R</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">R</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">ubase</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfweight</span> <span class="o">=</span> <span class="n">tfweight</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">nnz</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xfbase</span> <span class="o">=</span> <span class="n">xfbase</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xfbase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xfbase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">nnz</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xbase</span> <span class="o">=</span> <span class="n">xbase</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xbase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xbase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">nnz</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ubase</span> <span class="o">=</span> <span class="n">ubase</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ubase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ubase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">P</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">P</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pbase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pbase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">np</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="quadPenalty"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.quadPenalty">[docs]</a><span class="k">class</span> <span class="nc">quadPenalty</span><span class="p">(</span><span class="n">nonLinearObj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;In many scenarios, we want to minimize the quadratic of some variables for some variables.</span>
+
+<span class="sd">    This is generally different from LQR objective by that it is a point constraint and thus not integral one.</span>
+<span class="sd">    To make it versatile, the user is allowed to pass indices so we can directly evaluate those variables.</span>
+<span class="sd">    User friendly classes are also created so the indices are calculated internally.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="quadPenalty.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.quadPenalty.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for the class.</span>
+
+<span class="sd">        :param indices: ndarray, indices of variables we aim to penalize.</span>
+<span class="sd">        :param weights: float/ndarray, weights for terms</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="n">nonLinearObj</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="quadPenalty.__callg__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.quadPenalty.__callg__">[docs]</a>    <span class="k">def</span> <span class="nf">__callg__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">needg</span><span class="p">):</span>
+        <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">needg</span><span class="p">:</span>
+            <span class="n">G</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">rec</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">col</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span></div></div>
+
+
+<div class="viewcode-block" id="nonDiagLQRObj"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonDiagLQRObj">[docs]</a><span class="k">class</span> <span class="nc">nonDiagLQRObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for LQR objective with non-diagonal entries&quot;&quot;&quot;</span>
+    <span class="c1"># TODO: implement me</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="nonLinearPointConstr"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearPointConstr">[docs]</a><span class="k">class</span> <span class="nc">nonLinearPointConstr</span><span class="p">(</span><span class="n">baseFun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining point constraint function.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nonLinearPointConstr.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearPointConstr.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">np</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gradmode</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for nonlinear point constraint. Also serve as path constraint.</span>
+
+<span class="sd">        :param index: int, at which point is objective calculated</span>
+<span class="sd">        :param nc: int, dimension of constraint function</span>
+<span class="sd">        :param nx, nu, np: int, dimensions</span>
+<span class="sd">        :param lb, ub: lower and upper bound of the constraint function. None means equal to 0</span>
+<span class="sd">        :param gradmode: str, how gradient is provided</span>
+<span class="sd">        :param nG: int, number of nnz of Jacobian</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xdim</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">+</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">np</span>
+        <span class="n">baseFun</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdim</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">gradmode</span><span class="p">,</span> <span class="n">nG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">lb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">ub</span></div></div>
+
+
+<div class="viewcode-block" id="nonLinearConstr"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearConstr">[docs]</a><span class="k">class</span> <span class="nc">nonLinearConstr</span><span class="p">(</span><span class="n">baseFun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for defining constraint function in a general form.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nonLinearConstr.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.nonLinearConstr.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsol</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gradmode</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for general nonlinear constraint.</span>
+
+<span class="sd">        :param nsol: int, length of the solution vector, used to initialize baseFun</span>
+<span class="sd">        :param nc: int, dimension of constraint function</span>
+<span class="sd">        :param lb, ub: lower and upper bound of the constraint function. None means equal to 0</span>
+<span class="sd">        :param gradmode: str, how gradient is provided</span>
+<span class="sd">        :param nG: int, number of nnz of Jacobian</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">baseFun</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsol</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">gradmode</span><span class="p">,</span> <span class="n">nG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">lb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">ub</span></div></div>
+
+
+<div class="viewcode-block" id="linearPointConstr"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearPointConstr">[docs]</a><span class="k">class</span> <span class="nc">linearPointConstr</span><span class="p">(</span><span class="n">_objectWithMatrix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for linear constraint at selected points.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="linearPointConstr.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearPointConstr.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">lb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">ub</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="linearConstr"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearConstr">[docs]</a><span class="k">class</span> <span class="nc">linearConstr</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for linear constraints based on the whole x length.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="linearConstr.__init__"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.trajOptBase.linearConstr.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">lb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">ub</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gao Tang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

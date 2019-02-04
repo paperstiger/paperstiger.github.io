@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>trajOptLib.snoptWrapper &mdash; trajoptlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> trajoptlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">trajoptlib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>trajOptLib.snoptWrapper</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for trajOptLib.snoptWrapper</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># vim:fenc=utf-8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018 Gao Tang &lt;gt70@duke.edu&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Distributed under terms of the MIT license.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">snoptWrapper.py</span>
+
+
+<span class="sd">Wrapper functions for calling snopt</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pyoptsolver</span> <span class="k">as</span> <span class="nn">libsnopt</span>
+
+
+<div class="viewcode-block" id="parseResult"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.parseResult">[docs]</a><span class="k">def</span> <span class="nf">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse the results returned by snopt and convert to a dict.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;flag&#39;</span><span class="p">:</span> <span class="n">rst</span><span class="o">.</span><span class="n">flag</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="n">rst</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">rst</span><span class="o">.</span><span class="n">sol</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">rst</span><span class="o">.</span><span class="n">fval</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="directSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.directSolve">[docs]</a><span class="k">def</span> <span class="nf">directSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like y = f(x) where x, y are np.ndarray</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param nf: int, length of y</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">directSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inDirectSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.inDirectSolve">[docs]</a><span class="k">def</span> <span class="nf">inDirectSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like f(x, y) where x, y are np.ndarray</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param nf: int, length of y</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">nf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">inDirectSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="gradSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.gradSolve">[docs]</a><span class="k">def</span> <span class="nf">gradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like y, J = f(x) where x, y, J are np.ndarray</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param nf: int, length of y</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">gradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inGradSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.inGradSolve">[docs]</a><span class="k">def</span> <span class="nf">inGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like f(x, y, J) where x, y, J are np.ndarray</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param nf: int, length of y</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">nf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">inGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="spGradSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.spGradSolve">[docs]</a><span class="k">def</span> <span class="nf">spGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like y, spJ = f(x) where x, y are np.ndarray, J is scipy.sparse.csc_matrix</span>
+<span class="sd">    :param nf: int, length of y</span>
+<span class="sd">    :param nG: int, nnz of spJ</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y</span><span class="p">,</span> <span class="n">spJ</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">nG</span> <span class="o">=</span> <span class="n">spJ</span><span class="o">.</span><span class="n">nnz</span>
+    <span class="k">if</span> <span class="n">nG</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">spJ</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">nG</span> <span class="o">=</span> <span class="n">spJ</span><span class="o">.</span><span class="n">nnz</span>
+    <span class="k">assert</span> <span class="n">nf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">nG</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">spGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">nG</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inSpGradSolve"><a class="viewcode-back" href="../../trajOptLib.html#trajOptLib.snoptWrapper.inSpGradSolve">[docs]</a><span class="k">def</span> <span class="nf">inSpGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nG</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Directly solve the optimization problem described using fun with guess x0</span>
+
+<span class="sd">    :param fun: A function like f(x, y, G, row, col, rec) where x, y are np.ndarray, J is scipy.sparse.csc_matrix</span>
+<span class="sd">    :param x0: np.ndarray (nx,) the initial guess to the solver</span>
+<span class="sd">    :param nf: int, number of f</span>
+<span class="sd">    :param nG: int number nonzero in Jacobian</span>
+<span class="sd">    :param xlb: np.ndarray (nx,) lower bound on decision variable x</span>
+<span class="sd">    :param xub: np.ndarray (nx,) upper bound on decision variable x</span>
+<span class="sd">    :param clb: np.ndarray (nc,) lower bound on return function c</span>
+<span class="sd">    :param cub: np.ndarray (nc,) upper bound on return function c</span>
+<span class="sd">    :param cfg: libsnopt.SnoptConfig, configuration of snopt solver</span>
+<span class="sd">    :returns: a dictionary containing the solution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cub</span><span class="p">)</span>
+            <span class="n">nf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">nf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">nG</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xlb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">xub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cub</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">SnoptConfig</span><span class="p">()</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">libsnopt</span><span class="o">.</span><span class="n">inSpGradSolve</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">nG</span><span class="p">,</span> <span class="n">xlb</span><span class="p">,</span> <span class="n">xub</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">cub</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parseResult</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gao Tang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

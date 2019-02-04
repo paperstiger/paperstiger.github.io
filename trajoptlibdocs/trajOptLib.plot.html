@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>trajOptLib.plot package &mdash; trajoptlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> trajoptlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">trajOptLib.plot package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-trajOptLib.plot.common">trajOptLib.plot.common module</a></li>
+<li><a class="reference internal" href="#module-trajOptLib.plot.compare">trajOptLib.plot.compare module</a></li>
+<li><a class="reference internal" href="#module-trajOptLib.plot.plot3d">trajOptLib.plot.plot3d module</a></li>
+<li><a class="reference internal" href="#module-trajOptLib.plot">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">trajoptlib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>trajOptLib.plot package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/trajOptLib.plot.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trajoptlib-plot-package">
+<h1>trajOptLib.plot package<a class="headerlink" href="#trajoptlib-plot-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-trajOptLib.plot.common">
+<span id="trajoptlib-plot-common-module"></span><h2>trajOptLib.plot.common module<a class="headerlink" href="#module-trajOptLib.plot.common" title="Permalink to this headline">¶</a></h2>
+<p>common.py</p>
+<p>Define global variables being shared across this module</p>
+<dl class="function">
+<dt id="trajOptLib.plot.common.get3dAxis">
+<code class="descclassname">trajOptLib.plot.common.</code><code class="descname">get3dAxis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/common.html#get3dAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.common.get3dAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fig and an axis that supports 3d plotting</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.common.getColorCycle">
+<code class="descclassname">trajOptLib.plot.common.</code><code class="descname">getColorCycle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/common.html#getColorCycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.common.getColorCycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.common.getIndAlongAxis">
+<code class="descclassname">trajOptLib.plot.common.</code><code class="descname">getIndAlongAxis</code><span class="sig-paren">(</span><em>x</em>, <em>axis</em>, <em>ind=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/common.html#getIndAlongAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.common.getIndAlongAxis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.common.setFontSize">
+<code class="descclassname">trajOptLib.plot.common.</code><code class="descname">setFontSize</code><span class="sig-paren">(</span><em>SMALL_SIZE=14</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/common.html#setFontSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.common.setFontSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>change many font size for better visualization</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajOptLib.plot.compare">
+<span id="trajoptlib-plot-compare-module"></span><h2>trajOptLib.plot.compare module<a class="headerlink" href="#module-trajOptLib.plot.compare" title="Permalink to this headline">¶</a></h2>
+<p>compare.py</p>
+<p>Extensively used when I want to compare several samples</p>
+<dl class="function">
+<dt id="trajOptLib.plot.compare.compare">
+<code class="descclassname">trajOptLib.plot.compare.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>arr</em>, <em>x=None</em>, <em>ax=None</em>, <em>transpose=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/compare.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.compare.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a matrix or 3d tensor, do some comparison</p>
+<p>arr is 3d tensor or list of 2d array
+x is the x-coordinate for each Cat, so it is a list of 1d nparray
+trnspose = True make the data be data by sample
+show = False means not plot immediately
+TODO:
+headtail = True means distinguish between 1st and last samples
+kwargs are allowed configurations, we have to pass in dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.compare.compareXYZ">
+<code class="descclassname">trajOptLib.plot.compare.</code><code class="descname">compareXYZ</code><span class="sig-paren">(</span><em>arr</em>, <em>ax=None</em>, <em>transpose=False</em>, <em>d3=False</em>, <em>scatter=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/compare.html#compareXYZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.compare.compareXYZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>hybrid of compare, and plot. Assume we have a cat by N by dim dataset, we want to select a few col/row to plot in 2d/3d</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajOptLib.plot.plot3d">
+<span id="trajoptlib-plot-plot3d-module"></span><h2>trajOptLib.plot.plot3d module<a class="headerlink" href="#module-trajOptLib.plot.plot3d" title="Permalink to this headline">¶</a></h2>
+<p>plot3d.py</p>
+<dl class="function">
+<dt id="trajOptLib.plot.plot3d.addSphere">
+<code class="descclassname">trajOptLib.plot.plot3d.</code><code class="descname">addSphere</code><span class="sig-paren">(</span><em>ax</em>, <em>xc</em>, <em>yc</em>, <em>zc</em>, <em>r</em>, <em>elev=10</em>, <em>color='g'</em>, <em>alpha=0.2</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/plot3d.html#addSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.plot3d.addSphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.plot3d.plot">
+<code class="descclassname">trajOptLib.plot.plot3d.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>x</em>, <em>y=None</em>, <em>z=None</em>, <em>ax=None</em>, <em>axis=1</em>, <em>noz=False</em>, <em>show=False</em>, <em>scatter=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/plot3d.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.plot3d.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Easy-2-use function for plotting, either line or scatter is supported, 2d and 3d are supported
+Refer scatter for document</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.plot3d.scatter">
+<code class="descclassname">trajOptLib.plot.plot3d.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>x</em>, <em>y=None</em>, <em>z=None</em>, <em>ax=None</em>, <em>axis=1</em>, <em>noz=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/plot3d.html#scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.plot3d.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot scatter figure.
+if y and z is None, simply use M, col determines 2d (default) or 3d
+axis determines column-wise (default) or row-wise plot
+if y is not None, and M and y are both 1d, plot 2d, otherwise do it for 1st axis
+if z is not None, do the same for 3d case
+kwargs might be xaxis, xind, yaxis, yind, zaxis, zind</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.plot3d.set_axes_equal">
+<code class="descclassname">trajOptLib.plot.plot3d.</code><code class="descname">set_axes_equal</code><span class="sig-paren">(</span><em>ax</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot/plot3d.html#set_axes_equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.plot3d.set_axes_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make axes of 3D plot have equal scale so that spheres appear as spheres,
+cubes as cubes, etc..  This is one possible solution to Matplotlib’s
+ax.set_aspect(‘equal’) and ax.axis(‘equal’) not working for 3D.</p>
+<dl class="docutils">
+<dt>Input</dt>
+<dd>ax: a matplotlib axis, e.g., as output from plt.gca().</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajOptLib.plot">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-trajOptLib.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="trajOptLib.plot.alignRange">
+<code class="descclassname">trajOptLib.plot.</code><code class="descname">alignRange</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot.html#alignRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.alignRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given many axes, align the range</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.getSizeFont">
+<code class="descclassname">trajOptLib.plot.</code><code class="descname">getSizeFont</code><span class="sig-paren">(</span><em>size=16</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot.html#getSizeFont"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.getSizeFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.setTickSize">
+<code class="descclassname">trajOptLib.plot.</code><code class="descname">setTickSize</code><span class="sig-paren">(</span><em>ax</em>, <em>size=16</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot.html#setTickSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.setTickSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajOptLib.plot.show">
+<code class="descclassname">trajOptLib.plot.</code><code class="descname">show</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajOptLib/plot.html#show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajOptLib.plot.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gao Tang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

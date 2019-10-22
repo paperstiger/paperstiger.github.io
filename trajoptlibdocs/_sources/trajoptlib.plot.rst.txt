@@ -1,0 +1,38 @@
+trajoptlib.plot package
+=======================
+
+Submodules
+----------
+
+trajoptlib.plot.common module
+-----------------------------
+
+.. automodule:: trajoptlib.plot.common
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.plot.compare module
+------------------------------
+
+.. automodule:: trajoptlib.plot.compare
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.plot.plot3d module
+-----------------------------
+
+.. automodule:: trajoptlib.plot.plot3d
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: trajoptlib.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:

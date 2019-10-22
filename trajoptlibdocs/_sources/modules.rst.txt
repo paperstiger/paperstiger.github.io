@@ -1,6 +1,7 @@
-docs
-====
+trajoptlib
+==========
 
 .. toctree::
    :maxdepth: 4
 
+   trajoptlib

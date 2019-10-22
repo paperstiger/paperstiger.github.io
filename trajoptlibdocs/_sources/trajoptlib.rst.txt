@@ -1,0 +1,87 @@
+trajoptlib package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    trajoptlib.io
+    trajoptlib.legacy
+    trajoptlib.plot
+
+Submodules
+----------
+
+trajoptlib.classBuilder module
+------------------------------
+
+.. automodule:: trajoptlib.classBuilder
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.systemBuilder module
+-------------------------------
+
+.. automodule:: trajoptlib.systemBuilder
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.trajOptBase module
+-----------------------------
+
+.. automodule:: trajoptlib.trajOptBase
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.trajOptCollocationProblem module
+-------------------------------------------
+
+.. automodule:: trajoptlib.trajOptCollocationProblem
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.trajOptManifoldCollocationProblem module
+---------------------------------------------------
+
+.. automodule:: trajoptlib.trajOptManifoldCollocationProblem
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.trajOptMultiPhaseCollocationProblem module
+-----------------------------------------------------
+
+.. automodule:: trajoptlib.trajOptMultiPhaseCollocationProblem
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.trajOptProblem module
+--------------------------------
+
+.. automodule:: trajoptlib.trajOptProblem
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.utility module
+-------------------------
+
+.. automodule:: trajoptlib.utility
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: trajoptlib
+    :members:
+    :undoc-members:
+    :show-inheritance:

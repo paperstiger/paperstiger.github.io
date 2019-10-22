@@ -1,0 +1,46 @@
+trajoptlib.io package
+=====================
+
+Submodules
+----------
+
+trajoptlib.io.argument module
+-----------------------------
+
+.. automodule:: trajoptlib.io.argument
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.io.fileio module
+---------------------------
+
+.. automodule:: trajoptlib.io.fileio
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.io.printio module
+----------------------------
+
+.. automodule:: trajoptlib.io.printio
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajoptlib.io.stringio module
+-----------------------------
+
+.. automodule:: trajoptlib.io.stringio
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: trajoptlib.io
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,683 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>trajoptlib.legacy package &#8212; trajoptlib 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="trajoptlib-legacy-package">
+<h1>trajoptlib.legacy package<a class="headerlink" href="#trajoptlib-legacy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-trajoptlib.legacy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-trajoptlib.legacy" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="trajoptlib.legacy.probFun">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">probFun</code><a class="headerlink" href="#trajoptlib.legacy.probFun" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.OptProblem</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.solver">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">solver</code><a class="headerlink" href="#trajoptlib.legacy.solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.SnoptSolver</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.snoptConfig">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">snoptConfig</code><a class="headerlink" href="#trajoptlib.legacy.snoptConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.SnoptConfig</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.ipSolver">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">ipSolver</code><a class="headerlink" href="#trajoptlib.legacy.ipSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.IpoptSolver</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.ipOption">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">ipOption</code><a class="headerlink" href="#trajoptlib.legacy.ipOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.IpoptConfig</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.trajOptProblem">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">trajOptProblem</code><a class="headerlink" href="#trajoptlib.legacy.trajOptProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptProblem.OptProblem</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.system">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">system</code><a class="headerlink" href="#trajoptlib.legacy.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.System" title="trajoptlib.trajOptBase.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.System</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.daeSystem">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">daeSystem</code><a class="headerlink" href="#trajoptlib.legacy.daeSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.DaeSystem" title="trajoptlib.trajOptBase.DaeSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.DaeSystem</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.baseFun">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">baseFun</code><a class="headerlink" href="#trajoptlib.legacy.baseFun" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.BaseFun" title="trajoptlib.trajOptBase.BaseFun"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.BaseFun</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.addX">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">addX</code><a class="headerlink" href="#trajoptlib.legacy.addX" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.AddX" title="trajoptlib.trajOptBase.AddX"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.AddX</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.lqrObj">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">lqrObj</code><a class="headerlink" href="#trajoptlib.legacy.lqrObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.LqrObj" title="trajoptlib.trajOptBase.LqrObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.LqrObj</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.linearPointObj">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">linearPointObj</code><a class="headerlink" href="#trajoptlib.legacy.linearPointObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.LinearPointObj" title="trajoptlib.trajOptBase.LinearPointObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.LinearPointObj</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.nonLinearObj">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">nonLinearObj</code><a class="headerlink" href="#trajoptlib.legacy.nonLinearObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.NonLinearObj" title="trajoptlib.trajOptBase.NonLinearObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.NonLinearObj</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.nonLinearPointObj">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">nonLinearPointObj</code><a class="headerlink" href="#trajoptlib.legacy.nonLinearPointObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.NonLinearPointObj" title="trajoptlib.trajOptBase.NonLinearPointObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.NonLinearPointObj</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.linearObj">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">linearObj</code><a class="headerlink" href="#trajoptlib.legacy.linearObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.LinearObj" title="trajoptlib.trajOptBase.LinearObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.LinearObj</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.nonLinearPointConstr">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">nonLinearPointConstr</code><a class="headerlink" href="#trajoptlib.legacy.nonLinearPointConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.NonLinearPointConstr" title="trajoptlib.trajOptBase.NonLinearPointConstr"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.NonLinearPointConstr</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.nonLinearConstr">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">nonLinearConstr</code><a class="headerlink" href="#trajoptlib.legacy.nonLinearConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.NonLinearConstr" title="trajoptlib.trajOptBase.NonLinearConstr"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.NonLinearConstr</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.linearPointConstr">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">linearPointConstr</code><a class="headerlink" href="#trajoptlib.legacy.linearPointConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.LinearPointConstr" title="trajoptlib.trajOptBase.LinearPointConstr"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.LinearPointConstr</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.linearConstr">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">linearConstr</code><a class="headerlink" href="#trajoptlib.legacy.linearConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.LinearConstr" title="trajoptlib.trajOptBase.LinearConstr"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.LinearConstr</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">trajOptProblem</code></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptProblem.OptProblem</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.trajOptCollocProblem">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">trajOptCollocProblem</code><a class="headerlink" href="#trajoptlib.legacy.trajOptCollocProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptCollocationProblem.OptProblem</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="trajoptlib.legacy.NonLinearConnectConstr">
+<em class="property">class </em><code class="descclassname">trajoptlib.legacy.</code><code class="descname">NonLinearConnectConstr</code><span class="sig-paren">(</span><em>phase1</em>, <em>phase2</em>, <em>nc</em>, <em>lb=None</em>, <em>ub=None</em>, <em>nG=None</em>, <em>index1=-1</em>, <em>index2=0</em>, <em>addx_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#NonLinearConnectConstr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.NonLinearConnectConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for defining point constraint function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Currentmodule:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="trajoptlib.legacy.NonLinearConnectConstr.__callg__">
+<code class="descname">__callg__</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>F</em>, <em>G</em>, <em>row</em>, <em>col</em>, <em>rec</em>, <em>needg</em>, <em>addx=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#NonLinearConnectConstr.__callg__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.NonLinearConnectConstr.__callg__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call and evaluate the constraint function. x1 and x2 are points in phase 1 and phase 2.</p>
+<p>I return them together in G, row, col since it might be derived from sympy so thay are together.
+But, human derived formulas love the previous one better</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.NonLinearConnectConstr.find_time_gradient">
+<code class="descname">find_time_gradient</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>addx=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#NonLinearConnectConstr.find_time_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.NonLinearConnectConstr.find_time_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find where the gradients are w.r.t time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="trajoptlib.legacy.LinearConnectConstr">
+<em class="property">class </em><code class="descclassname">trajoptlib.legacy.</code><code class="descname">LinearConnectConstr</code><span class="sig-paren">(</span><em>phase1</em>, <em>phase2</em>, <em>a1</em>, <em>a2</em>, <em>lb=None</em>, <em>ub=None</em>, <em>index1=-1</em>, <em>index2=0</em>, <em>adda=None</em>, <em>addx_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#LinearConnectConstr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.LinearConnectConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for defining linear constraint functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Currentmodule:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="trajoptlib.legacy.LinearConnectConstr.find_time_gradient">
+<code class="descname">find_time_gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#LinearConnectConstr.find_time_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.LinearConnectConstr.find_time_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a matrix, find column 0 indice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem">
+<em class="property">class </em><code class="descclassname">trajoptlib.legacy.</code><code class="descname">TrajOptMultiPhaseCollocProblem</code><span class="sig-paren">(</span><em>probs</em>, <em>addx=None</em>, <em>process_args={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyoptsolver.pyoptsolvercpp.OptProblem</span></code></p>
+<p>A class for definition of trajectory optimization problem using collocation constraints with support for phase transition.</p>
+<p>The support of multiple phase is implemented by calling functions defined in trajOptCollocProblem since I do not want to reinvent the wheels.
+I can conveniently add support for other constraints that connects two phases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Currentmodule:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_addx_constr">
+<code class="descname">add_addx_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_addx_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_addx_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a linear or nonlinear constraint associated with addx.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a point constraint.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_addx_obj">
+<code class="descname">add_addx_obj</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_addx_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_addx_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an objective evaluated at addx to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> – a point objective object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_constr">
+<code class="descname">add_connect_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_connect_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a linear constraint that connects two phases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a connect constraint object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_linear_constr">
+<code class="descname">add_connect_linear_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_connect_linear_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_linear_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a linear connection constraint to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a LinearConnectConstr object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_nonlinear_constr">
+<code class="descname">add_connect_nonlinear_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_connect_nonlinear_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_connect_nonlinear_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a nonlinear connect constraint to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a NonLinearConnectConstr object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_constr">
+<code class="descname">add_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a constraint to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a general constraint function object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_nonlinear_constr">
+<code class="descname">add_nonlinear_constr</code><span class="sig-paren">(</span><em>constr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_nonlinear_constr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_nonlinear_constr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a general nonlinear constraint to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constr</strong> – a nonLinearConstr object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_nonlinear_obj">
+<code class="descname">add_nonlinear_obj</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_nonlinear_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_nonlinear_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a nonlinear objective to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> – a nonLinearObj object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_obj">
+<code class="descname">add_obj</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.add_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.add_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a objective function to the problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> – a general objective function object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.change_connect_time_constr_bound">
+<code class="descname">change_connect_time_constr_bound</code><span class="sig-paren">(</span><em>num</em>, <em>xl</em>, <em>xu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.change_connect_time_constr_bound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.change_connect_time_constr_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the connect time constraint if other specification are required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_sol">
+<code class="descname">guess_gen_from_phase_sol</code><span class="sig-paren">(</span><em>phase_sols</em>, <em>addX=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an initial guess for the multi-phase problem by concatenating solutions from single phases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>phase_sols</strong> – list of dict, a list of guess of solutions to each phase</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_traj">
+<code class="descname">guess_gen_from_phase_traj</code><span class="sig-paren">(</span><em>X=None</em>, <em>U=None</em>, <em>P=None</em>, <em>t0=None</em>, <em>tf=None</em>, <em>addx=None</em>, <em>tstamp=None</em>, <em>obj=None</em>, <em>addX=None</em>, <em>interp_kind='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_traj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.guess_gen_from_phase_traj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a guess from the trajectory in other phases.</p>
+<p>The parameters are the same with .. py:classmethod::<cite>trajOptCollocation.genGuessFromTraj</cite> but a list version.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.parse_f">
+<code class="descname">parse_f</code><span class="sig-paren">(</span><em>sol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.parse_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.parse_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the solution and evaluate on all constraints.
+Check which are active and analyze why we are not converging.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sol</strong> – ndarray, the solution we want to analyze</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.parse_sol">
+<code class="descname">parse_sol</code><span class="sig-paren">(</span><em>sol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.parse_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.parse_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a solution, we parse and return readable data structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sol</strong> – ndarray or result object returned by SNOPT.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return traj:</th><td class="field-body">a dict of keys ‘t’, ‘x’, ‘u’, ‘p’, ‘phases’.</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>‘t’ is a concatenated time grid (might not be equidistant, but piecewise equidistant</li>
+<li>‘x’ ndarray, (*, dimx) is the concatenated state vector of all phases</li>
+<li>‘u’ ndarray, (*, dimu) is the concatenated control vector of all phases</li>
+<li>‘p’ ndarray, (*, dimp) is the concatenated parameter vector of all phases</li>
+<li>‘phases’ list of dictionaries composed of keys ‘t’, ‘x’, ‘u’, ‘p’, ‘addx’ where ‘addx’ is additional optimization variables.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.pre_process">
+<code class="descname">pre_process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.pre_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.pre_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the instances of probFun now we are ready.</p>
+<p>Call this function after the objectives and constraints have been set appropriately.
+It calculate the space required for SNOPT and allocates sparsity structure if necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.random_gen_x">
+<code class="descname">random_gen_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/trajOptMultiPhaseCollocationProblem.html#TrajOptMultiPhaseCollocProblem.random_gen_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.TrajOptMultiPhaseCollocProblem.random_gen_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a random guess to the problem.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.manifoldConstr">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">manifoldConstr</code><a class="headerlink" href="#trajoptlib.legacy.manifoldConstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptManifoldCollocationProblem.ManifoldConstr" title="trajoptlib.trajOptManifoldCollocationProblem.ManifoldConstr"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptManifoldCollocationProblem.ManifoldConstr</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.trajOptManifoldCollocProblem">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">trajOptManifoldCollocProblem</code><a class="headerlink" href="#trajoptlib.legacy.trajOptManifoldCollocProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptManifoldCollocationProblem.OptProblem</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.systemWrapper">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">systemWrapper</code><a class="headerlink" href="#trajoptlib.legacy.systemWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.classBuilder.SystemWrapper" title="trajoptlib.classBuilder.SystemWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.classBuilder.SystemWrapper</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.daeSystemWrapper">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">daeSystemWrapper</code><a class="headerlink" href="#trajoptlib.legacy.daeSystemWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.classBuilder.DaeSystemWrapper" title="trajoptlib.classBuilder.DaeSystemWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.classBuilder.DaeSystemWrapper</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="trajoptlib.legacy.nonLinearPointConstrWrapper">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">nonLinearPointConstrWrapper</code><a class="headerlink" href="#trajoptlib.legacy.nonLinearPointConstrWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="trajoptlib.html#trajoptlib.classBuilder.NonLinearPointConstrWrapper" title="trajoptlib.classBuilder.NonLinearPointConstrWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.classBuilder.NonLinearPointConstrWrapper</span></code></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.legacy.blockIndex">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">blockIndex</code><span class="sig-paren">(</span><em>i</em>, <em>j</em>, <em>rows</em>, <em>cols</em>, <em>order='C'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/classBuilder.html#blockIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.blockIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a matrix block, we return the index of row and columns.</p>
+<p>For a matrix we choose a block using the upper left corner positioned
+at (i, j) and size (row, col). Each element of the block has row and
+col index, they are returned in two arrays. The order controls we use
+row or column major order</p>
+<p>For example, blockIndex(1, 3, 2, 3, ‘C’) returns
+(array([1, 1, 1, 2, 2, 2]), array([3, 4, 5, 3, 4, 5]))</p>
+<dl class="docutils">
+<dt>i: int</dt>
+<dd>the row of the upper left corner</dd>
+<dt>j: int</dt>
+<dd>the column of the upper left corner</dd>
+<dt>rows: int</dt>
+<dd>number of rows of the block</dd>
+<dt>cols: int</dt>
+<dd>number of columns of the block</dd>
+<dt>order: char</dt>
+<dd>(‘C’/’F’) if we return row or column major</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="trajoptlib.legacy.GeometricRobot">
+<em class="property">class </em><code class="descclassname">trajoptlib.legacy.</code><code class="descname">GeometricRobot</code><span class="sig-paren">(</span><em>dim</em>, <em>dimp=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/systemBuilder.html#GeometricRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.GeometricRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.DaeSystem" title="trajoptlib.trajOptBase.DaeSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.DaeSystem</span></code></a></p>
+<p>A class that defines a geometric robot, no dynamics involved</p>
+<dl class="method">
+<dt id="trajoptlib.legacy.GeometricRobot.dyn">
+<code class="descname">dyn</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>u</em>, <em>p</em>, <em>y</em>, <em>G</em>, <em>row</em>, <em>col</em>, <em>rec</em>, <em>needg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/systemBuilder.html#GeometricRobot.dyn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.GeometricRobot.dyn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write dynamics function</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="trajoptlib.legacy.GeometricRobotSystem">
+<em class="property">class </em><code class="descclassname">trajoptlib.legacy.</code><code class="descname">GeometricRobotSystem</code><span class="sig-paren">(</span><em>dim</em>, <em>dimp=0</em>, <em>ode='Euler'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/systemBuilder.html#GeometricRobotSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.GeometricRobotSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="trajoptlib.html#trajoptlib.trajOptBase.System" title="trajoptlib.trajOptBase.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">trajoptlib.trajOptBase.System</span></code></a></p>
+<p>A class that implements a geometric robot, second order.</p>
+<dl class="method">
+<dt id="trajoptlib.legacy.GeometricRobotSystem.dyn">
+<code class="descname">dyn</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>u</em>, <em>p=None</em>, <em>h=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/systemBuilder.html#GeometricRobotSystem.dyn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.GeometricRobotSystem.dyn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamics function without gradient information.</p>
+<p>It has to be overriden.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> – float, time when evaluating system dynamics</li>
+<li><strong>x</strong> – np.ndarray, (nx,) state variable</li>
+<li><strong>u</strong> – np.ndarray, (nu,) control variable</li>
+<li><strong>p</strong> – np.ndarray, (np,) additional optimizing variable</li>
+<li><strong>h</strong> – float, used for discretized system. Integration step size</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">either dotx or x_k+1 depends on system type</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="trajoptlib.legacy.GeometricRobotSystem.jac_dyn">
+<code class="descname">jac_dyn</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>u</em>, <em>p</em>, <em>h=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/systemBuilder.html#GeometricRobotSystem.jac_dyn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.legacy.GeometricRobotSystem.jac_dyn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamics function with Jacobian return.</p>
+<p>It has to be overriden.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong><strong>, </strong><strong>u</strong><strong>, </strong><strong>p</strong><strong>, </strong><strong>h</strong> (<em>t</em><em>,</em>) – see dyn</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">y: ndarray, either dotx or x_k+1</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">J: ndarray/spmatrix, returning Jacobian of this function evaluation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.legacy.parseX">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">parseX</code><span class="sig-paren">(</span><em>x</em>, <em>N</em>, <em>dimx</em>, <em>dimu</em>, <em>dimp</em>, <em>uset0</em>, <em>usetf</em>, <em>setfinal=True</em><span class="sig-paren">)</span><a class="headerlink" href="#trajoptlib.legacy.parseX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the solution into a dict of time, state, control, parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – ndarray, solution found by SNOPT</li>
+<li><strong>dimx</strong><strong>, </strong><strong>dimu</strong><strong>, </strong><strong>dimp</strong> (<em>N</em><em>,</em>) – discretization of the problem</li>
+<li><strong>usetf</strong> (<em>uset0</em><em>,</em>) – float/array like, specification of initial and final time</li>
+<li><strong>setfinal</strong> – if we set the final element of u/p the same with second last</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary of keys ‘t’, ‘x’, ‘u’, ‘p’</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.legacy.showSol">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">showSol</code><span class="sig-paren">(</span><em>solDict</em>, <em>xsplit=None</em>, <em>usplit=None</em>, <em>psplit=None</em>, <em>show=True</em><span class="sig-paren">)</span><a class="headerlink" href="#trajoptlib.legacy.showSol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the parsed solution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>solDict</strong> – dict, returned from solParse; or a list of such dict. Then they are compared</li>
+<li><strong>xsplit</strong> – if state space is large, this splits it into several images it’s a list of int like (3, 6). None means no split</li>
+<li><strong>usplit</strong> – similar to xsplit, apply for control</li>
+<li><strong>psplit</strong> – similar to xsplit, apply for parameter</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.legacy.getInf">
+<code class="descclassname">trajoptlib.legacy.</code><code class="descname">getInf</code><span class="sig-paren">(</span><em>n=None</em><span class="sig-paren">)</span><a class="headerlink" href="#trajoptlib.legacy.getInf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an inf array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> – int, size of the array to return, None means scalar</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns y:</th><td class="field-body">the scalar inf or array of inf</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">trajoptlib</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Gao Tang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/trajoptlib.legacy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

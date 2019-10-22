@@ -1,0 +1,222 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>trajoptlib.plot package &#8212; trajoptlib 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="trajoptlib-plot-package">
+<h1>trajoptlib.plot package<a class="headerlink" href="#trajoptlib-plot-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-trajoptlib.plot.common">
+<span id="trajoptlib-plot-common-module"></span><h2>trajoptlib.plot.common module<a class="headerlink" href="#module-trajoptlib.plot.common" title="Permalink to this headline">¶</a></h2>
+<p>common.py</p>
+<p>Define global variables being shared across this module</p>
+<dl class="function">
+<dt id="trajoptlib.plot.common.get3dAxis">
+<code class="descclassname">trajoptlib.plot.common.</code><code class="descname">get3dAxis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/common.html#get3dAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.common.get3dAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fig and an axis that supports 3d plotting</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.common.getColorCycle">
+<code class="descclassname">trajoptlib.plot.common.</code><code class="descname">getColorCycle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/common.html#getColorCycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.common.getColorCycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.common.getIndAlongAxis">
+<code class="descclassname">trajoptlib.plot.common.</code><code class="descname">getIndAlongAxis</code><span class="sig-paren">(</span><em>x</em>, <em>axis</em>, <em>ind=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/common.html#getIndAlongAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.common.getIndAlongAxis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.common.setFontSize">
+<code class="descclassname">trajoptlib.plot.common.</code><code class="descname">setFontSize</code><span class="sig-paren">(</span><em>SMALL_SIZE=14</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/common.html#setFontSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.common.setFontSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>change many font size for better visualization</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.plot.compare">
+<span id="trajoptlib-plot-compare-module"></span><h2>trajoptlib.plot.compare module<a class="headerlink" href="#module-trajoptlib.plot.compare" title="Permalink to this headline">¶</a></h2>
+<p>compare.py</p>
+<p>Extensively used when I want to compare several samples</p>
+<dl class="function">
+<dt id="trajoptlib.plot.compare.compare">
+<code class="descclassname">trajoptlib.plot.compare.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>arr</em>, <em>x=None</em>, <em>ax=None</em>, <em>transpose=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/compare.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.compare.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a matrix or 3d tensor, do some comparison</p>
+<p>arr is 3d tensor or list of 2d array
+x is the x-coordinate for each Cat, so it is a list of 1d nparray
+trnspose = True make the data be data by sample
+show = False means not plot immediately
+TODO:
+headtail = True means distinguish between 1st and last samples
+kwargs are allowed configurations, we have to pass in dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.compare.compareXYZ">
+<code class="descclassname">trajoptlib.plot.compare.</code><code class="descname">compareXYZ</code><span class="sig-paren">(</span><em>arr</em>, <em>ax=None</em>, <em>transpose=False</em>, <em>d3=False</em>, <em>scatter=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/compare.html#compareXYZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.compare.compareXYZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>hybrid of compare, and plot. Assume we have a cat by N by dim dataset, we want to select a few col/row to plot in 2d/3d</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.plot.plot3d">
+<span id="trajoptlib-plot-plot3d-module"></span><h2>trajoptlib.plot.plot3d module<a class="headerlink" href="#module-trajoptlib.plot.plot3d" title="Permalink to this headline">¶</a></h2>
+<p>plot3d.py</p>
+<dl class="function">
+<dt id="trajoptlib.plot.plot3d.addSphere">
+<code class="descclassname">trajoptlib.plot.plot3d.</code><code class="descname">addSphere</code><span class="sig-paren">(</span><em>ax</em>, <em>xc</em>, <em>yc</em>, <em>zc</em>, <em>r</em>, <em>elev=10</em>, <em>color='g'</em>, <em>alpha=0.2</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/plot3d.html#addSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.plot3d.addSphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.plot3d.plot">
+<code class="descclassname">trajoptlib.plot.plot3d.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>x</em>, <em>y=None</em>, <em>z=None</em>, <em>ax=None</em>, <em>axis=1</em>, <em>noz=False</em>, <em>show=False</em>, <em>scatter=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/plot3d.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.plot3d.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Easy-2-use function for plotting, either line or scatter is supported, 2d and 3d are supported
+Refer scatter for document</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.plot3d.scatter">
+<code class="descclassname">trajoptlib.plot.plot3d.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>x</em>, <em>y=None</em>, <em>z=None</em>, <em>ax=None</em>, <em>axis=1</em>, <em>noz=False</em>, <em>show=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/plot3d.html#scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.plot3d.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot scatter figure. 
+if y and z is None, simply use M, col determines 2d (default) or 3d
+axis determines column-wise (default) or row-wise plot
+if y is not None, and M and y are both 1d, plot 2d, otherwise do it for 1st axis
+if z is not None, do the same for 3d case
+kwargs might be xaxis, xind, yaxis, yind, zaxis, zind</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.plot3d.set_axes_equal">
+<code class="descclassname">trajoptlib.plot.plot3d.</code><code class="descname">set_axes_equal</code><span class="sig-paren">(</span><em>ax</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot/plot3d.html#set_axes_equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.plot3d.set_axes_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make axes of 3D plot have equal scale so that spheres appear as spheres,
+cubes as cubes, etc..  This is one possible solution to Matplotlib’s
+ax.set_aspect(‘equal’) and ax.axis(‘equal’) not working for 3D.</p>
+<dl class="docutils">
+<dt>Input</dt>
+<dd>ax: a matplotlib axis, e.g., as output from plt.gca().</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.plot">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-trajoptlib.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="trajoptlib.plot.alignRange">
+<code class="descclassname">trajoptlib.plot.</code><code class="descname">alignRange</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot.html#alignRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.alignRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given many axes, align the range</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.getSizeFont">
+<code class="descclassname">trajoptlib.plot.</code><code class="descname">getSizeFont</code><span class="sig-paren">(</span><em>size=16</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot.html#getSizeFont"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.getSizeFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.setTickSize">
+<code class="descclassname">trajoptlib.plot.</code><code class="descname">setTickSize</code><span class="sig-paren">(</span><em>ax</em>, <em>size=16</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot.html#setTickSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.setTickSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.plot.show">
+<code class="descclassname">trajoptlib.plot.</code><code class="descname">show</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/plot.html#show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.plot.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">trajoptlib</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Gao Tang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/trajoptlib.plot.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

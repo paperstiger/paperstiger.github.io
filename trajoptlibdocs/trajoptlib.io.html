@@ -1,0 +1,197 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>trajoptlib.io package &#8212; trajoptlib 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="trajoptlib-io-package">
+<h1>trajoptlib.io package<a class="headerlink" href="#trajoptlib-io-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-trajoptlib.io.argument">
+<span id="trajoptlib-io-argument-module"></span><h2>trajoptlib.io.argument module<a class="headerlink" href="#module-trajoptlib.io.argument" title="Permalink to this headline">¶</a></h2>
+<p>argument.py</p>
+<p>Easy arguments</p>
+<dl class="function">
+<dt id="trajoptlib.io.argument.get_onoff_args">
+<code class="descclassname">trajoptlib.io.argument.</code><code class="descname">get_onoff_args</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/argument.html#get_onoff_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.argument.get_onoff_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get on-off arguments</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.io.fileio">
+<span id="trajoptlib-io-fileio-module"></span><h2>trajoptlib.io.fileio module<a class="headerlink" href="#module-trajoptlib.io.fileio" title="Permalink to this headline">¶</a></h2>
+<p>fileio.py</p>
+<p>Useful functions for file io, especially dict of dict type.
+This type is heavily used for clustered training.</p>
+<dl class="function">
+<dt id="trajoptlib.io.fileio.assignModule">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">assignModule</code><span class="sig-paren">(</span><em>module</em>, <em>dct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#assignModule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.assignModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign values in dict to the module</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.assignModuleByJson">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">assignModuleByJson</code><span class="sig-paren">(</span><em>module</em>, <em>fnm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#assignModuleByJson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.assignModuleByJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change contents of a module by json file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.ddctParse">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">ddctParse</code><span class="sig-paren">(</span><em>fnm</em>, <em>thekey=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#ddctParse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.ddctParse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a file that is dict of dict.
+I wish this is faster than pickle</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.ddctSave">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">ddctSave</code><span class="sig-paren">(</span><em>fnm</em>, <em>arr</em>, <em>pklmode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#ddctSave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.ddctSave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a dict of dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.dumpJson">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">dumpJson</code><span class="sig-paren">(</span><em>obj</em>, <em>fnm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#dumpJson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.dumpJson" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.getJson">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">getJson</code><span class="sig-paren">(</span><em>fnm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#getJson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.getJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a json file as a dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="trajoptlib.io.fileio.getLogPath">
+<code class="descclassname">trajoptlib.io.fileio.</code><code class="descname">getLogPath</code><span class="sig-paren">(</span><em>fnm</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/fileio.html#getLogPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.fileio.getLogPath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.io.printio">
+<span id="trajoptlib-io-printio-module"></span><h2>trajoptlib.io.printio module<a class="headerlink" href="#module-trajoptlib.io.printio" title="Permalink to this headline">¶</a></h2>
+<p>printio.py</p>
+<p>Control print</p>
+<dl class="class">
+<dt id="trajoptlib.io.printio.Mute">
+<em class="property">class </em><code class="descclassname">trajoptlib.io.printio.</code><code class="descname">Mute</code><span class="sig-paren">(</span><em>mute=True</em>, <em>record=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/printio.html#Mute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.printio.Mute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+<p>Capture std.output.</p>
+<dl class="method">
+<dt id="trajoptlib.io.printio.Mute.getOutput">
+<code class="descname">getOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/printio.html#Mute.getOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.printio.Mute.getOutput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.io.stringio">
+<span id="trajoptlib-io-stringio-module"></span><h2>trajoptlib.io.stringio module<a class="headerlink" href="#module-trajoptlib.io.stringio" title="Permalink to this headline">¶</a></h2>
+<p>stringio.py</p>
+<p>Provides subroutines to extract numbers from string</p>
+<dl class="function">
+<dt id="trajoptlib.io.stringio.getNumber">
+<code class="descclassname">trajoptlib.io.stringio.</code><code class="descname">getNumber</code><span class="sig-paren">(</span><em>string</em>, <em>mapfun=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trajoptlib/io/stringio.html#getNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trajoptlib.io.stringio.getNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse all numbers from a string</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trajoptlib.io">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-trajoptlib.io" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">trajoptlib</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Gao Tang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/trajoptlib.io.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

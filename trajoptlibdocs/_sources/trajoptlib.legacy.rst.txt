@@ -1,0 +1,10 @@
+trajoptlib.legacy package
+=========================
+
+Module contents
+---------------
+
+.. automodule:: trajoptlib.legacy
+    :members:
+    :undoc-members:
+    :show-inheritance:

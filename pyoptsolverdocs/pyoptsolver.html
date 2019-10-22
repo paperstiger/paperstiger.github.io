@@ -1,0 +1,1317 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyoptsolver package &#8212; pyoptsolver 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pyoptsolver-package">
+<h1>pyoptsolver package<a class="headerlink" href="#pyoptsolver-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyoptsolver-pyipopt-module">
+<h2>pyoptsolver.pyipopt module<a class="headerlink" href="#pyoptsolver-pyipopt-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyoptsolver.pyoptsolver">
+<span id="pyoptsolver-pyoptsolver-module"></span><h2>pyoptsolver.pyoptsolver module<a class="headerlink" href="#module-pyoptsolver.pyoptsolver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyoptsolver.pyoptsolver.OptConfig">
+<em class="property">class </em><code class="descclassname">pyoptsolver.pyoptsolver.</code><code class="descname">OptConfig</code><span class="sig-paren">(</span><em>backend='ipopt'</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to keep track of various optimization configurations.</p>
+<p>It provides a unified interface for interacting with those solvers.
+Some custom options are also supported, but might not work depending on the backend.</p>
+<dl class="attribute">
+<dt id="pyoptsolver.pyoptsolver.OptConfig.ipopt_options">
+<code class="descname">ipopt_options</code><em class="property"> = set(['exact_hessian', 'fd_jacobian', 'linear_solver', 'print_freq'])</em><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig.ipopt_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.pyoptsolver.OptConfig.scipy_kws">
+<code class="descname">scipy_kws</code><em class="property"> = set(['tol'])</em><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig.scipy_kws" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.pyoptsolver.OptConfig.scipy_option_kws">
+<code class="descname">scipy_option_kws</code><em class="property"> = set(['barrier_tol', 'disp', 'factorization_method', 'grad', 'gtol', 'initial_barrier_parameter', 'initial_barrier_tolerance', 'initial_constr_penalty', 'initial_tr_radius', 'xtol'])</em><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig.scipy_option_kws" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.pyoptsolver.OptConfig.shared_options">
+<code class="descname">shared_options</code><em class="property"> = set(['deriv_check', 'fea_tol', 'major_iter', 'opt_tol', 'print_level'])</em><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig.shared_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.pyoptsolver.OptConfig.snopt_options">
+<code class="descname">snopt_options</code><em class="property"> = set(['iter_limit', 'minor_iter', 'print_file'])</em><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptConfig.snopt_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.pyoptsolver.OptSolver">
+<em class="property">class </em><code class="descclassname">pyoptsolver.pyoptsolver.</code><code class="descname">OptSolver</code><span class="sig-paren">(</span><em>problem</em>, <em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pyoptsolver.pyoptsolver.OptSolver.solve_guess">
+<code class="descname">solve_guess</code><span class="sig-paren">(</span><em>guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver.solve_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptSolver.solve_guess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.pyoptsolver.OptSolver.solve_rand">
+<code class="descname">solve_rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver.solve_rand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.OptSolver.solve_rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.pyoptsolver.TrustConstrSolver">
+<em class="property">class </em><code class="descclassname">pyoptsolver.pyoptsolver.</code><code class="descname">TrustConstrSolver</code><span class="sig-paren">(</span><em>problem</em>, <em>option</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#TrustConstrSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.TrustConstrSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A wrapper that builds on a already declared problem.</p>
+<dl class="method">
+<dt id="pyoptsolver.pyoptsolver.TrustConstrSolver.solve_guess">
+<code class="descname">solve_guess</code><span class="sig-paren">(</span><em>guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#TrustConstrSolver.solve_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.TrustConstrSolver.solve_guess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.pyoptsolver.TrustConstrSolver.solve_rand">
+<code class="descname">solve_rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#TrustConstrSolver.solve_rand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.pyoptsolver.TrustConstrSolver.solve_rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoptsolver-pysnopt-module">
+<h2>pyoptsolver.pysnopt module<a class="headerlink" href="#pyoptsolver-pysnopt-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyoptsolver">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyoptsolver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyoptsolver.IpoptConfig">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">IpoptConfig</code><a class="headerlink" href="#pyoptsolver.IpoptConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>A class that specifies configuration to ipopt solver.</p>
+<p>This class has the default constructor.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>print_level (int): level for printing = 4
+max_iter (int): maximum iteration = 1000
+linear_solver (string): linear solver = “mumps”;
+hessian_approximation (string): Hessian approach = “limited-memory”
+jacobian_appximation (string): Jacobian approach = “exact”;
+derivative_test (string): if test derivative = “no”;
+tol (float): convergence tolerance = 1e-6;
+constr_vio_tol (float): tolerance on constraint = 1e-6;
+max_cpu_time (float): computation time = 1e6;</dd>
+</dl>
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.add_float_option">
+<code class="descname">add_float_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.add_float_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a float option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure
+value (float): the float value for configuration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.add_int_option">
+<code class="descname">add_int_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.add_int_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure
+value (int): the integer value for configuration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.add_string_option">
+<code class="descname">add_string_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: unicode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.add_string_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a string option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure
+value (str): the string value for configuration</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.constr_vio_tol">
+<code class="descname">constr_vio_tol</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.constr_vio_tol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.derivative_test">
+<code class="descname">derivative_test</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.derivative_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.enable_deriv_check">
+<code class="descname">enable_deriv_check</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>lvl: int=0L</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.enable_deriv_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the derivative check param.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>level (int): the derivative check level</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.enable_exact_hessian">
+<code class="descname">enable_exact_hessian</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.enable_exact_hessian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable usage of exact Hessian.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.enable_fd_jacobian">
+<code class="descname">enable_fd_jacobian</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.enable_fd_jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable usage of finite-difference approximation of Jacobian.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.hessian_approximation">
+<code class="descname">hessian_approximation</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.hessian_approximation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.jacobian_approximation">
+<code class="descname">jacobian_approximation</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.jacobian_approximation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.linear_solver">
+<code class="descname">linear_solver</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.linear_solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.max_cpu_time">
+<code class="descname">max_cpu_time</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.max_cpu_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.max_iter">
+<code class="descname">max_iter</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.max_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.print_frequency_iter">
+<code class="descname">print_frequency_iter</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.print_frequency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.print_level">
+<code class="descname">print_level</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.print_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_fea_tol">
+<code class="descname">set_fea_tol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_fea_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the feasibility tolerance.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tol (float): the tolerance</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_linear_solver">
+<code class="descname">set_linear_solver</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: unicode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_linear_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the linear solver.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>solver (str): the selected linear solver.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_major_iter">
+<code class="descname">set_major_iter</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_major_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the major iteration limit.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>iter (int): limit for major iteration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_opt_tol">
+<code class="descname">set_opt_tol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_opt_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the optimization tolerance.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tol (float): the tolerance</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_print_freq">
+<code class="descname">set_print_freq</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_print_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the print frequency.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>freq (int): the print frequency</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptConfig.set_print_level">
+<code class="descname">set_print_level</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pyoptsolver.IpoptConfig.set_print_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the print level.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>level (int): the print level</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.IpoptConfig.tol">
+<code class="descname">tol</code><a class="headerlink" href="#pyoptsolver.IpoptConfig.tol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.IpoptSolver">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">IpoptSolver</code><a class="headerlink" href="#pyoptsolver.IpoptSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>The solver class.</p>
+<dl class="method">
+<dt id="pyoptsolver.IpoptSolver.solve_guess">
+<code class="descname">solve_guess</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptSolver, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.IpoptSolver.solve_guess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.IpoptSolver.solve_rand">
+<code class="descname">solve_rand</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.IpoptSolver</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.IpoptSolver.solve_rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.SnoptConfig">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">SnoptConfig</code><a class="headerlink" href="#pyoptsolver.SnoptConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>A class that specifies configuration to snopt solver, keep for backward compatibility.</p>
+<p>This class has the default constructor.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>name (str=”Toy”): the name for the problem.
+print_file (str): the filename for printing results.
+print_level (int=0): the print level for major iteration; 0 disable iterations; 1 enables iterations.
+minor_print_level (int=0): print level for minor iteration.
+verify_level (int=0): level for gradient verification; 0 disable; 3 full verify.
+major_iter_limit (int=0): major iteration limit
+minor_iter_limit (int=0): minor iteration limit
+iter_limit (int=0): total iteration limit
+opt_tol (float=1e-6): tolerance for optimality
+fea_tol (float=1e-6): tolerance for feasibility
+int_options (list of (string, int) tuple): integer options
+float_options (list of (string, float) tuple): float options
+string_options (list of (string, string) tuple): string options</dd>
+</dl>
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.addFloatOption">
+<code class="descname">addFloatOption</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.addFloatOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.addIntOption">
+<code class="descname">addIntOption</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.addIntOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.addStringOption">
+<code class="descname">addStringOption</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.addStringOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.add_float_option">
+<code class="descname">add_float_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.add_float_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a float option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure
+value (float): the float value for configuration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.add_int_option">
+<code class="descname">add_int_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em>, <em>arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.add_int_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure
+value (int): the integer value for configuration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.add_string_option">
+<code class="descname">add_string_option</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: unicode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.add_string_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a string option to configurations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>option (str): the option to configure</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.enable_deriv_check">
+<code class="descname">enable_deriv_check</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>lvl: int=3L</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.enable_deriv_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the derivative check param.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>level (int): the derivative check level</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.feaTol">
+<code class="descname">feaTol</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.feaTol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.fea_tol">
+<code class="descname">fea_tol</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.fea_tol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.floatOptions">
+<code class="descname">floatOptions</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.floatOptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.float_options">
+<code class="descname">float_options</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.float_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.intOptions">
+<code class="descname">intOptions</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.intOptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.int_options">
+<code class="descname">int_options</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.int_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.iterLimit">
+<code class="descname">iterLimit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.iterLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.iter_limit">
+<code class="descname">iter_limit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.iter_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.majorIterLimit">
+<code class="descname">majorIterLimit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.majorIterLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.major_iter_limit">
+<code class="descname">major_iter_limit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.major_iter_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.minorIterLimit">
+<code class="descname">minorIterLimit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.minorIterLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.minorPrintLevel">
+<code class="descname">minorPrintLevel</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.minorPrintLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.minor_iter_limit">
+<code class="descname">minor_iter_limit</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.minor_iter_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.minor_print_level">
+<code class="descname">minor_print_level</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.minor_print_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.name">
+<code class="descname">name</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.optTol">
+<code class="descname">optTol</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.optTol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.opt_tol">
+<code class="descname">opt_tol</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.opt_tol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.printFile">
+<code class="descname">printFile</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.printFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.printLevel">
+<code class="descname">printLevel</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.printLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.print_file">
+<code class="descname">print_file</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.print_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.print_level">
+<code class="descname">print_level</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.print_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_fea_tol">
+<code class="descname">set_fea_tol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_fea_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the feasibility tolerance.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tol (float): the tolerance</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_iter_limit">
+<code class="descname">set_iter_limit</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_iter_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the total iteration limit.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>iter (int): limit for total iteration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_major_iter">
+<code class="descname">set_major_iter</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_major_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the major iteration limit.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>iter (int): limit for major iteration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_minor_iter">
+<code class="descname">set_minor_iter</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_minor_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the minor iteration limit.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>iter (int): limit for minor iteration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_opt_tol">
+<code class="descname">set_opt_tol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_opt_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the optimization tolerance.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tol (float): the tolerance</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptConfig.set_print_level">
+<code class="descname">set_print_level</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptConfig</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pyoptsolver.SnoptConfig.set_print_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the print level.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>level (int): the print level</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.stringOptions">
+<code class="descname">stringOptions</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.stringOptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.string_options">
+<code class="descname">string_options</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.string_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.verifyLevel">
+<code class="descname">verifyLevel</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.verifyLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.SnoptConfig.verify_level">
+<code class="descname">verify_level</code><a class="headerlink" href="#pyoptsolver.SnoptConfig.verify_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.SnoptSolver">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">SnoptSolver</code><a class="headerlink" href="#pyoptsolver.SnoptSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>The snopt solver class that is constructed by a SnoptProblem object and a SnoptConfig object.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>prob (SnoptProblem): the problem object.
+cfg (SnoptConfig): the configuration.</dd>
+</dl>
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.fEval">
+<code class="descname">fEval</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyoptsolver.SnoptSolver.fEval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li>fEval(self: pyoptsolver.pyoptsolvercpp.SnoptSolver, arg0: numpy.ndarray[float64[m, 1], flags.writeable]) -&gt; numpy.ndarray[float64[m, 1]]</li>
+<li>fEval(self: pyoptsolver.pyoptsolvercpp.SnoptSolver, arg0: numpy.ndarray[float64[m, 1], flags.writeable]) -&gt; numpy.ndarray[float64[m, 1]]</li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.getInfo">
+<code class="descname">getInfo</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pyoptsolver.SnoptSolver.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.get_info">
+<code class="descname">get_info</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pyoptsolver.SnoptSolver.get_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the inform variable from the solver. It indicates solving status.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: the info.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.obj_search">
+<code class="descname">obj_search</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver, arg0: numpy.ndarray[float64[m, 1], flags.writeable], arg1: int, arg2: int, arg3: int, arg4: float, arg5: float</em><span class="sig-paren">)</span> &#x2192; Tuple[pyoptsolver.pyoptsolvercpp.OptResult, numpy.ndarray[float64[m, 1]], numpy.ndarray[float64[m, 1]]]<a class="headerlink" href="#pyoptsolver.SnoptSolver.obj_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an initial, use search style to control how solver proceed.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>guess (ndarray): an initial guess
+iter (int): initial iteration time
+step (int): iteration time for later search
+step_num (int): how many more step iterations do we play.
+abstol (float): absolute cost tolerance, exit if improvement is smaller than it
+reltol (float): relative cost tolerance, exit if improvement is smaller than reltol * last cost</dd>
+<dt>Returns:</dt>
+<dd>SnoptResult: a SnoptResult object
+costs: ndarray, recorded costs during search
+times: ndarray, recorded used times during search</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setFeaTol">
+<code class="descname">setFeaTol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setFeaTol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setFloatOption">
+<code class="descname">setFloatOption</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: unicode</em>, <em>arg1: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setFloatOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setIntOption">
+<code class="descname">setIntOption</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: unicode</em>, <em>arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setIntOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setIntWorkspace">
+<code class="descname">setIntWorkspace</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setIntWorkspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setMajorIter">
+<code class="descname">setMajorIter</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setMajorIter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setOptTol">
+<code class="descname">setOptTol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: float</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setOptTol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setPrintFile">
+<code class="descname">setPrintFile</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: unicode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setPrintFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.setRealWorkspace">
+<code class="descname">setRealWorkspace</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.setRealWorkspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.set_int_workspace">
+<code class="descname">set_int_workspace</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.set_int_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the integer workspace size, this is necessary sometimes.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>size (int): the desired integer workspace size.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.set_real_workspace">
+<code class="descname">set_real_workspace</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.SnoptSolver.set_real_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the real workspace size, this is necessary sometimes.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>size (int): the desired real workspace size.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.solveGuess">
+<code class="descname">solveGuess</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.SnoptSolver.solveGuess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.solveRand">
+<code class="descname">solveRand</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.SnoptSolver.solveRand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.solve_guess">
+<code class="descname">solve_guess</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.SnoptSolver.solve_guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the problem using a user-specified guess.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x (ndarray): an initial guess.</dd>
+<dt>Returns:</dt>
+<dd>SnoptResult: a SnoptResult object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.solve_more">
+<code class="descname">solve_more</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.SnoptSolver.solve_more" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use hot restart and continue a few major iterations.
+It can be used when SNOPT is solely used for backtracking.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>iter (int): desired iteration number</dd>
+<dt>Returns:</dt>
+<dd>SnoptResult: a SnoptResult object</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.SnoptSolver.solve_rand">
+<code class="descname">solve_rand</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.SnoptSolver</em><span class="sig-paren">)</span> &#x2192; pyoptsolver.pyoptsolvercpp.OptResult<a class="headerlink" href="#pyoptsolver.SnoptSolver.solve_rand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the problem using a random guess generated by the solver itself.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>SnoptResult: a SnoptResult object.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.OptProblem">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">OptProblem</code><a class="headerlink" href="#pyoptsolver.OptProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>A class sub-classed by users to define a custom optimization problem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Currentmodule:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.__constraint__">
+<code class="descname">__constraint__</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: numpy.ndarray[float64[m, 1], flags.writeable]</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pyoptsolver.OptProblem.__constraint__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This class defines an optimization problem to optimize <span class="math notranslate nohighlight">\(y(0)\)</span> where <span class="math notranslate nohighlight">\(y=f(x)+Ax\)</span>
+subject to constraints <span class="math notranslate nohighlight">\(lb \le y \le ub\)</span> and <span class="math notranslate nohighlight">\(xlb \le x \le xub\)</span>.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>nx (int): number of variables to be optimized. The same with <code class="xref py py-class docutils literal notranslate"><span class="pre">FunBase</span></code>.
+nf (int): number of constraints. The same with <code class="xref py py-class docutils literal notranslate"><span class="pre">FunBase</span></code>.
+nG (int=0): nnz of the Jacobian matrix. The same with <code class="xref py py-class docutils literal notranslate"><span class="pre">FunBase</span></code>.
+grad (bool=False): if the function __callg__ has been implemented so we enable gradient.
+lb (ndarray): lower bound for f. It is readonly, use get_lb() to get a reference.
+ub (ndarray): upper bound for f. It is readonly, use get_ub() to get a reference.
+xlb (ndarray): lower bound for x. It is readonly, use get_xlb() to get a reference.
+xub (ndarray): upper bound for x. It is readonly, use get_xub() to get a reference.
+Aval (ndarray): the value ndarray for triplet A, use get_aval() to get a reference.
+Arow (ndarray): integer ndarray of rows for triplet A, use get_arow() to get a reference.
+Acol (ndarray): integer ndarray of columns for triplet A, use get_acol() to get a reference.</dd>
+<dt>Note:</dt>
+<dd>This class has 2 constructors. Refer to <code class="xref py py-class docutils literal notranslate"><span class="pre">FunBase</span></code> for details.
+The first entry of lb and ub should be -np.inf and np.inf, respectively.
+For linear function part, you have to set function return 0.
+Use ipopt_style() and snopt_style() to toggle function evaluation mode.</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.Acol">
+<code class="descname">Acol</code><a class="headerlink" href="#pyoptsolver.OptProblem.Acol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.Arow">
+<code class="descname">Arow</code><a class="headerlink" href="#pyoptsolver.OptProblem.Arow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.Aval">
+<code class="descname">Aval</code><a class="headerlink" href="#pyoptsolver.OptProblem.Aval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.batch_set_lb">
+<code class="descname">batch_set_lb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.batch_set_lb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set lb in batch mode by specifying an ndarray and starting index.</p>
+<p>This value is not necessary since you can get a reference by get_lb and directly operate on that.
+We keep it here for backward compatibility.
+Other similar functions are not documented. Please refer to this.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>lb (ndarray): a segment of lower bound to be set
+ind0 (int): the starting index for this segment.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.batch_set_ub">
+<code class="descname">batch_set_ub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.batch_set_ub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.batch_set_xlb">
+<code class="descname">batch_set_xlb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.batch_set_xlb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.batch_set_xub">
+<code class="descname">batch_set_xub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.batch_set_xub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.check_overlap">
+<code class="descname">check_overlap</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.check_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if user provided linear and nonlinear Jacobian has overlap.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.detect_prob_size">
+<code class="descname">detect_prob_size</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyoptsolver.OptProblem.detect_prob_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic">
+<li><p class="first">detect_prob_size(self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: int, arg1: int) -&gt; None</p>
+<blockquote>
+<div><p>Automatically detect nf and nG.</p>
+<p>This function requires __callf__ or __callg__ return non-trivial values.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first last">nf (int): an estimated size for <span class="math notranslate nohighlight">\(y\)</span>, it has to be larger.
+nG (int): an estimated size for Jacobian, it has to be larger. If set to 0, __callf__ is used and
+has to be defined. Otherwise __callg__ has to be defined.</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p class="first">detect_prob_size(self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: int, arg2: int) -&gt; None</p>
+<blockquote>
+<div><p>Automatically detect nf and nG.</p>
+<p>This function requires __callf__ or __callg__ return non-trivial values.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first last">x( ndarray): the guess being used. This will change nf too so please make sure its size is correct
+nf (int): an estimated size for <span class="math notranslate nohighlight">\(y\)</span>, it has to be larger.
+nG (int): an estimated size for Jacobian, it has to be larger. If set to 0, __callf__ is used and
+has to be defined. Otherwise __callg__ has to be defined.</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.enable_timer">
+<code class="descname">enable_timer</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.enable_timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn on internal timer. By doing so, user is able to call get_timer function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_constr">
+<code class="descname">eval_constr</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1]]<a class="headerlink" href="#pyoptsolver.OptProblem.eval_constr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_cost">
+<code class="descname">eval_cost</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pyoptsolver.OptProblem.eval_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_f">
+<code class="descname">eval_f</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1]]<a class="headerlink" href="#pyoptsolver.OptProblem.eval_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate __callf__ once.</p>
+<p>This serves for debugging purpose.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x (ndarray): a candidate solution</dd>
+<dt>Returns:</dt>
+<dd>y (ndarray): the evaluated function.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_g">
+<code class="descname">eval_g</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray[float64[m, 1]], numpy.ndarray[float64[m, 1]], numpy.ndarray[int64[m, 1]], numpy.ndarray[int64[m, 1]]]<a class="headerlink" href="#pyoptsolver.OptProblem.eval_g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate __callf__ once.</p>
+<p>This serves for debugging purpose.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x (ndarray): a candidate solution</dd>
+<dt>Returns:</dt>
+<dd>y (ndarray): the evaluated function.
+G (ndarray): the value part of the returned Jacobian triplet.
+row (ndarray): the row part of the returned Jacobian triplet.
+col (ndarray): the column part of the returned Jacobian triplet.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_gradient">
+<code class="descname">eval_gradient</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1]]<a class="headerlink" href="#pyoptsolver.OptProblem.eval_gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.eval_jacobian">
+<code class="descname">eval_jacobian</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray[float64[m, 1]], numpy.ndarray[int64[m, 1]], numpy.ndarray[int64[m, 1]]]<a class="headerlink" href="#pyoptsolver.OptProblem.eval_jacobian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_acol">
+<code class="descname">get_acol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[int32[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_acol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_arow">
+<code class="descname">get_arow</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[int32[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_arow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_aval">
+<code class="descname">get_aval</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_aval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_lb">
+<code class="descname">get_lb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_lb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_timer">
+<code class="descname">get_timer</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray[float64[m, 1]], numpy.ndarray[float64[m, 1]], numpy.ndarray[float64[m, 1]]]<a class="headerlink" href="#pyoptsolver.OptProblem.get_timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple of time, cost, constr</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_ub">
+<code class="descname">get_ub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_ub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_xlb">
+<code class="descname">get_xlb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_xlb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.get_xub">
+<code class="descname">get_xub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptProblem.get_xub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.grad">
+<code class="descname">grad</code><a class="headerlink" href="#pyoptsolver.OptProblem.grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.ipopt_style">
+<code class="descname">ipopt_style</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.ipopt_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.ipstyle">
+<code class="descname">ipstyle</code><a class="headerlink" href="#pyoptsolver.OptProblem.ipstyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.lb">
+<code class="descname">lb</code><a class="headerlink" href="#pyoptsolver.OptProblem.lb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.nG">
+<code class="descname">nG</code><a class="headerlink" href="#pyoptsolver.OptProblem.nG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.nH">
+<code class="descname">nH</code><a class="headerlink" href="#pyoptsolver.OptProblem.nH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.nf">
+<code class="descname">nf</code><a class="headerlink" href="#pyoptsolver.OptProblem.nf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.nx">
+<code class="descname">nx</code><a class="headerlink" href="#pyoptsolver.OptProblem.nx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.random_gen_x">
+<code class="descname">random_gen_x</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1]]<a class="headerlink" href="#pyoptsolver.OptProblem.random_gen_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly generate an initial guess of x within lb and ub bounds.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>ndarray: the generated initial guess.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_a_by_matrix">
+<code class="descname">set_a_by_matrix</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, n], flags.c_contiguous]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_a_by_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set triplet matrix A by a dense row major matrix, i.e. 2d ndarray of size (m, n).</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>mat (ndarray): the 2d float A matrix in row major.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_a_by_triplet">
+<code class="descname">set_a_by_triplet</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyoptsolver.OptProblem.set_a_by_triplet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic">
+<li><p class="first">set_a_by_triplet(self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: numpy.ndarray[int32[m, 1]], arg2: numpy.ndarray[int32[m, 1]]) -&gt; None</p>
+<blockquote>
+<div><p>Set triplet matrix A by the value, row, column triplet pairs.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first last">val (ndarray): the value ndarray
+row (ndarray): the integer row ndarray
+col (ndarray): thet integer column ndarray</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p class="first">set_a_by_triplet(self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]], arg1: numpy.ndarray[int64[m, 1]], arg2: numpy.ndarray[int64[m, 1]]) -&gt; None</p>
+<blockquote>
+<div><p>Set triplet matrix A by the value, row, column triplet pairs.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first last">val (ndarray): the value ndarray
+row (ndarray): the integer row ndarray
+col (ndarray): thet integer column ndarray</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_debug_verbose">
+<code class="descname">set_debug_verbose</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em>, <em>arg0: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_debug_verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn on or off verbosity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_lb">
+<code class="descname">set_lb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_lb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_ub">
+<code class="descname">set_ub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_ub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_xlb">
+<code class="descname">set_xlb</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_xlb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.set_xub">
+<code class="descname">set_xub</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem, arg0: numpy.ndarray[float64[m, 1]]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.set_xub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.snopt_style">
+<code class="descname">snopt_style</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.snopt_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.ub">
+<code class="descname">ub</code><a class="headerlink" href="#pyoptsolver.OptProblem.ub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.update_nf">
+<code class="descname">update_nf</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.update_nf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update nf and reallocate space for lb and ub, if necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>nf (int): the desired nf</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptProblem.update_ng">
+<code class="descname">update_ng</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptProblem</em>, <em>arg0: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyoptsolver.OptProblem.update_ng" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update nnz value, equivalently to directly writing to nG.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>ng (int): the desired nG</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.xlb">
+<code class="descname">xlb</code><a class="headerlink" href="#pyoptsolver.OptProblem.xlb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptProblem.xub">
+<code class="descname">xub</code><a class="headerlink" href="#pyoptsolver.OptProblem.xub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.OptResult">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">OptResult</code><a class="headerlink" href="#pyoptsolver.OptResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>A class that contains the solution returned by either one.</p>
+<p>This class has the default constructor.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>flag (int): the return flag by SNOPT.solve()
+obj (float): the cost function
+sol (ndarray): a copy of the solution
+fval (ndarray): a copy of F
+lmd (ndarray): a copy of Lagrangian multipliers
+xmul (ndarray): a copy of multipliers associated with bounds on x</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.flag">
+<code class="descname">flag</code><a class="headerlink" href="#pyoptsolver.OptResult.flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.fval">
+<code class="descname">fval</code><a class="headerlink" href="#pyoptsolver.OptResult.fval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptResult.get_fval">
+<code class="descname">get_fval</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptResult</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptResult.get_fval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the function evaluation without copying.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptResult.get_lambda">
+<code class="descname">get_lambda</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptResult</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptResult.get_lambda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the Lagrangian multiplier without copying.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptResult.get_sol">
+<code class="descname">get_sol</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptResult</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptResult.get_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the solution without copying.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptResult.get_xmul">
+<code class="descname">get_xmul</code><span class="sig-paren">(</span><em>self: pyoptsolver.pyoptsolvercpp.OptResult</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64[m, 1], flags.writeable]<a class="headerlink" href="#pyoptsolver.OptResult.get_xmul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the Lagrangian multiplier on bounds without copying.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.lmd">
+<code class="descname">lmd</code><a class="headerlink" href="#pyoptsolver.OptResult.lmd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.obj">
+<code class="descname">obj</code><a class="headerlink" href="#pyoptsolver.OptResult.obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.sol">
+<code class="descname">sol</code><a class="headerlink" href="#pyoptsolver.OptResult.sol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptResult.xmul">
+<code class="descname">xmul</code><a class="headerlink" href="#pyoptsolver.OptResult.xmul" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.OptSolver">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">OptSolver</code><span class="sig-paren">(</span><em>problem</em>, <em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.OptSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pyoptsolver.OptSolver.solve_guess">
+<code class="descname">solve_guess</code><span class="sig-paren">(</span><em>guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver.solve_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.OptSolver.solve_guess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyoptsolver.OptSolver.solve_rand">
+<code class="descname">solve_rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptSolver.solve_rand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.OptSolver.solve_rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyoptsolver.OptConfig">
+<em class="property">class </em><code class="descclassname">pyoptsolver.</code><code class="descname">OptConfig</code><span class="sig-paren">(</span><em>backend='ipopt'</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyoptsolver/pyoptsolver.html#OptConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyoptsolver.OptConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to keep track of various optimization configurations.</p>
+<p>It provides a unified interface for interacting with those solvers.
+Some custom options are also supported, but might not work depending on the backend.</p>
+<dl class="attribute">
+<dt id="pyoptsolver.OptConfig.ipopt_options">
+<code class="descname">ipopt_options</code><em class="property"> = set(['exact_hessian', 'fd_jacobian', 'linear_solver', 'print_freq'])</em><a class="headerlink" href="#pyoptsolver.OptConfig.ipopt_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptConfig.scipy_kws">
+<code class="descname">scipy_kws</code><em class="property"> = set(['tol'])</em><a class="headerlink" href="#pyoptsolver.OptConfig.scipy_kws" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptConfig.scipy_option_kws">
+<code class="descname">scipy_option_kws</code><em class="property"> = set(['barrier_tol', 'disp', 'factorization_method', 'grad', 'gtol', 'initial_barrier_parameter', 'initial_barrier_tolerance', 'initial_constr_penalty', 'initial_tr_radius', 'xtol'])</em><a class="headerlink" href="#pyoptsolver.OptConfig.scipy_option_kws" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptConfig.shared_options">
+<code class="descname">shared_options</code><em class="property"> = set(['deriv_check', 'fea_tol', 'major_iter', 'opt_tol', 'print_level'])</em><a class="headerlink" href="#pyoptsolver.OptConfig.shared_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyoptsolver.OptConfig.snopt_options">
+<code class="descname">snopt_options</code><em class="property"> = set(['iter_limit', 'minor_iter', 'print_file'])</em><a class="headerlink" href="#pyoptsolver.OptConfig.snopt_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pyoptsolver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Gao Tang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/pyoptsolver.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

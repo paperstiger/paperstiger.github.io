@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP32 BLE Data</title>
+</head>
+<body>
+    <h1>ESP32 BLE Data</h1>
+    <button id="connect">Connect to ESP32</button>
+    <div id="data">Data will appear here</div>
+
+    <script>
+        document.getElementById('connect').addEventListener('click', () => {
+            let options = {
+                filters: [{ services: ['12345678-1234-1234-1234-123456789012'] }]
+            };
+
+            navigator.bluetooth.requestDevice(options)
+            .then(device => device.gatt.connect())
+            .then(server => server.getPrimaryService('12345678-1234-1234-1234-123456789012'))
+            .then(service => service.getCharacteristic('87654321-4321-4321-4321-210987654321'))
+            .then(characteristic => {
+                return characteristic.startNotifications().then(_ => {
+                    characteristic.addEventListener('characteristicvaluechanged', handleData);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        });
+
+        function handleData(event) {
+            let value = new TextDecoder().decode(event.target.value);
+            document.getElementById('data').innerText = value;
+        }
+    </script>
+</body>
+</html>

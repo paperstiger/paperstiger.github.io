@@ -1,39 +1,138 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ESP32 BLE Data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <h1>ESP32 BLE Data</h1>
     <button id="connect">Connect to ESP32</button>
-    <div id="data">Data will appear here</div>
+    <div>
+        <h2 id='latest_value'></h2>
+        <h2 id='max_value'></h2>
+    </div>
+    <div>
+        <canvas id="sensor_chart" width="600" height="400"></canvas>
+    </div>
+    <div>
+        <h2><button id="tare_button" class="button">Tare</button></h2>
+    </div>
 
     <script>
+        var readings = [];
+        var times_in_seconds = [];
+        var tare_weight = 0;
+        var readingLength = 100;
+        var t0 = performance.now();
+        console.log('t0=', t0)
+
+        document.getElementById('tare_button').addEventListener('click', () => {
+            if (readings.length > 5) {
+            console.log('data = ', readings)
+            tare_weight = readings.slice(-5).reduce(function(total, cur) { return total + Number(cur);}, 0);
+            tare_weight = tare_weight / 5.0;
+            console.log("tare = ", tare_weight);
+            } else {
+                console.log("Not enough data to tare");
+            }
+        });
+
         document.getElementById('connect').addEventListener('click', () => {
             let options = {
                 filters: [{ services: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b'] }]
             };
 
             navigator.bluetooth.requestDevice(options)
-            .then(device => device.gatt.connect())
-            .then(server => server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b'))
-            .then(service => service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8'))
-            .then(characteristic => {
-                return characteristic.startNotifications().then(_ => {
-                    characteristic.addEventListener('characteristicvaluechanged', handleData);
+                .then(device => device.gatt.connect())
+                .then(server => server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b'))
+                .then(service => service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8'))
+                .then(characteristic => {
+                    return characteristic.startNotifications().then(_ => {
+                        characteristic.addEventListener('characteristicvaluechanged', handleData);
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
                 });
-            })
-            .catch(error => {
-                console.log(error);
-            });
         });
 
         function handleData(event) {
-            console.log(event.target.value)
+            // console.log(event.target.value)
             // let value = new TextDecoder().decode(event.target.value);
             let value = event.target.value.getUint32();
-            document.getElementById('data').innerText = value;
+            readings.push(value);
+            // var currentTime = new Date().getTime();
+            var timeDifference = performance.now() - t0;
+            times_in_seconds.push(Math.round(timeDifference / 10) / 100);
+            updatePlot();
+        }
+
+        function updatePlot() {
+            if (readings.length < 2) {
+                return;
+            }
+            if (readings.length > readingLength) {
+                readings = readings.slice(-readingLength);
+                times_in_seconds = times_in_seconds.slice(-readingLength);
+            }
+            var processed = readings.map(function (v) { return v - tare_weight })
+            document.getElementById('latest_value').innerText = "Value = " + processed[readings.length - 1];
+            var y_max = Math.max(1, Math.max(...processed));
+            document.getElementById('max_value').innerText = "Value = " + y_max;
+            let chartStatus = Chart.getChart("sensor_chart");
+            if (chartStatus != undefined) {
+                chartStatus.destroy();
+            }
+            var canvas = document.getElementById('sensor_chart');
+            var ctx = canvas.getContext('2d');
+            var data_chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: times_in_seconds,
+                    datasets: [{
+                        label: 'Force',
+                        data: processed,
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Force'
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20,
+                            },
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Time"
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20,
+                            },
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Force"
+                            }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
+
 </html>

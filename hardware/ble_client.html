@@ -16,8 +16,8 @@
 
             navigator.bluetooth.requestDevice(options)
             .then(device => device.gatt.connect())
-            .then(server => server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b'))
-            .then(service => service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8'))
+            .then(server => server.getPrimaryService('b9e91a27-c42a-4e9e-8852-69791238e8bd'))
+            .then(service => service.getCharacteristic('80cff95a-1c91-400e-8ac2-471bba0621c3'))
             .then(characteristic => {
                 return characteristic.startNotifications().then(_ => {
                     characteristic.addEventListener('characteristicvaluechanged', handleData);

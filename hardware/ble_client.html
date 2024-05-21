@@ -11,13 +11,13 @@
     <script>
         document.getElementById('connect').addEventListener('click', () => {
             let options = {
-                filters: [{ services: ['12345678-1234-1234-1234-123456789012'] }]
+                filters: [{ services: [''] }]
             };
 
             navigator.bluetooth.requestDevice(options)
             .then(device => device.gatt.connect())
-            .then(server => server.getPrimaryService('12345678-1234-1234-1234-123456789012'))
-            .then(service => service.getCharacteristic('87654321-4321-4321-4321-210987654321'))
+            .then(server => server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b'))
+            .then(service => service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8'))
             .then(characteristic => {
                 return characteristic.startNotifications().then(_ => {
                     characteristic.addEventListener('characteristicvaluechanged', handleData);

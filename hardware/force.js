@@ -53,7 +53,16 @@ function handleData(event) {
     // console.log(event.target.value)
     // let value = new TextDecoder().decode(event.target.value);
     let value = event.target.value.getUint32();
-    readings.push(value / slope - zero_point);
+    let force = Math.max(0, value / slope - zero_point);
+    // Sometimes reading has error, we reject it if force > 1000 lb
+    if (force > 1000) {
+        if (readings.length > 0) {
+            force = readings[readings.length - 1]
+        } else {
+            force = 0;
+        }
+    }
+    readings.push(force);
     // var currentTime = new Date().getTime();
     var timeDifference = performance.now() - t0;
     times_in_seconds.push(Math.round(timeDifference / 10) / 100);

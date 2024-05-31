@@ -41,6 +41,10 @@ document.getElementById('connect').addEventListener('click', () => {
         .catch(error => {
             console.log(error);
         });
+    
+    if ('bluetooth' in navigator && 'setScreenDimEnabled' in navigator.bluetooth) {
+        navigator.bluetooth.setScreenDimEnabled(false);
+    }
 });
 
 function handleData(event) {

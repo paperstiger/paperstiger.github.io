@@ -12,7 +12,6 @@ initPlot();
 
 // Retrieve the font size from the CSS variable
 var fontSize = getComputedStyle(document.documentElement).getPropertyValue('font-size');
-console.log('Font size is ', fontSize)
 
 document.getElementById('tare_button').addEventListener('click', () => {
     if (readings.length > 5) {
@@ -43,7 +42,10 @@ document.getElementById('connect').addEventListener('click', () => {
         });
     
     if ('bluetooth' in navigator && 'setScreenDimEnabled' in navigator.bluetooth) {
-        navigator.bluetooth.setScreenDimEnabled(false);
+        navigator.bluetooth.setScreenDimEnabled(true);
+        document.getElementById('dim_status').innerText="Set False";
+    } else {
+        document.getElementById('dim_status').innerText="Not supported";
     }
 });
 
@@ -118,6 +120,10 @@ function initPlot() {
     });
 }
 
+function formatForce(x) {
+    return Math.floor(x * 100) / 100;
+}
+
 function updatePlot() {
     if (readings.length < 2) {
         return;
@@ -127,9 +133,9 @@ function updatePlot() {
         times_in_seconds = times_in_seconds.slice(-readingLength);
     }
     var processed = readings.map(function (v) { return v - tare_weight })
-    document.getElementById('latest_value').innerText = "Value = " + processed[readings.length - 1];
+    document.getElementById('latest_value').innerText = "Force = " + formatForce(processed[readings.length - 1]);
     var y_max = Math.max(1, Math.max(...processed));
-    document.getElementById('max_value').innerText = "Value = " + y_max;
+    document.getElementById('max_value').innerText = "Max Force = " + formatForce(y_max);
     let chart = Chart.getChart("sensor_chart");
     if (chart != undefined) {
         chart.data.datasets[0].data = processed;

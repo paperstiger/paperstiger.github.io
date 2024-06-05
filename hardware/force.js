@@ -4,9 +4,13 @@ var tare_weight = 0;
 var readingLength = 100;
 var t0 = performance.now();
 
+var dev_mode = false;
+var show_force = true;
+
 // The polynomial fit is like zero point is 61571 and slope is 14565 per pound
-var zero_point = 4.425
-var slope = 14426.78
+// weight = reading / slope + zero_point
+var zero_point = 0; // -4.425
+var slope = 1; // 14426.78
 
 initPlot();
 
@@ -20,6 +24,16 @@ document.getElementById('tare_button').addEventListener('click', () => {
         console.log("tare = ", tare_weight);
     } else {
         console.log("Not enough data to tare");
+    }
+});
+
+document.getElementById('pause_button').addEventListener('click', () => {
+    if (show_force) {
+        show_force = false;
+        document.getElementById('pause_button').innerText = 'Resume';
+    } else {
+        show_force = true;
+        document.getElementById('pause_button').innerText = 'Pause';
     }
 });
 
@@ -52,9 +66,13 @@ document.getElementById('connect').addEventListener('click', () => {
 function handleData(event) {
     // console.log(event.target.value)
     // let value = new TextDecoder().decode(event.target.value);
-    let value = event.target.value.getUint32();
-    let force = Math.max(0, value / slope - zero_point);
+    // let force = readLong(event.target.value.buffer);
+    let reading = event.target.value.getInt32()
+    console.log(reading)
+    force = value / slope + zero_point
+    // let force = Math.max(0, value / slope - zero_point);
     // Sometimes reading has error, we reject it if force > 1000 lb
+    /*
     if (force > 1000) {
         if (readings.length > 0) {
             force = readings[readings.length - 1]
@@ -62,11 +80,18 @@ function handleData(event) {
             force = 0;
         }
     }
+    */
     readings.push(force);
     // var currentTime = new Date().getTime();
     var timeDifference = performance.now() - t0;
     times_in_seconds.push(Math.round(timeDifference / 10) / 100);
-    updatePlot();
+    if (readings.length > readingLength) {
+        readings = readings.slice(-readingLength);
+        times_in_seconds = times_in_seconds.slice(-readingLength);
+    }
+    if (show_force) {
+        updatePlot();
+    }
 }
 
 function initPlot() {
@@ -136,10 +161,6 @@ function formatForce(x) {
 function updatePlot() {
     if (readings.length < 2) {
         return;
-    }
-    if (readings.length > readingLength) {
-        readings = readings.slice(-readingLength);
-        times_in_seconds = times_in_seconds.slice(-readingLength);
     }
     var processed = readings.map(function (v) { return v - tare_weight })
     document.getElementById('latest_value').innerText = "Force = " + formatForce(processed[readings.length - 1]);

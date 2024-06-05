@@ -23,12 +23,37 @@
         <canvas id="sensor_chart" width="600" height="300"></canvas>
     </div>
     <div>
-        <h2><button id="tare_button" class="button">Tare</button></h2>
+        <button id="tare_button" class="button">Tare</button>
+        <button id="pause_button" class="button">Pause</button>
     </div>
-    <p id="dim_status">undefined</p>
+
+    <!-- This section for linear regression (calibration)-->
+    <div>
+        <input type="number" id="weight" placeholder="Weight">
+        <button onclick="addData()">Add Weight</button>
+    </div>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Reading</th>
+                <th>Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be added here -->
+        </tbody>
+    </table>
+
+    <button onclick="calculateRegression()">Calibrate</button>
+
+    <div class="result" id="result">
+        <!-- Results will be displayed here -->
+    </div>
 
     <script src="force.js"></script>
     <script src="timer.js"></script>
+    <script src="calibrate.js"></script>
 </body>
 
 </html>

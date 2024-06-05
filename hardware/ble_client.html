@@ -11,7 +11,18 @@
 
 <body>
     <h1>ESP32 BLE Data</h1>
-    <button id="connect">Connect to ESP32</button>
+    <button id="connect">Connect</button>
+    <label for="preset_dropdown">Preset:</label>
+    <select id="preset_dropdown" onchange="updatePreset()">
+        <option value="v0">v0</option>
+        <option value="v1">v1</option>
+        <option value="local">local</option>
+        <option value="raw">raw</option>
+    </select>
+    <label class="switch">
+        <input type="checkbox" id="devmode_switch">
+        <span class="slider">Dev Mode</span><span class="slider" id="formula_display" style="display:none">Placeholder</span>
+    </label>
     <div id="timer">00:00:00</div>
     <button id="startPause">Start</button>
     <button id="reset">Reset</button>
@@ -20,40 +31,52 @@
         <h2 id='max_value'></h2>
     </div>
     <div>
-        <canvas id="sensor_chart" width="600" height="300"></canvas>
+        <canvas id="sensor_chart" width="400" height="300"></canvas>
     </div>
     <div>
         <button id="tare_button" class="button">Tare</button>
         <button id="pause_button" class="button">Pause</button>
+        <button id="calibrate_button" class="button" onclick="openCalibrate()">Calibrate</button>
     </div>
 
-    <!-- This section for linear regression (calibration)-->
-    <div>
-        <input type="number" id="weight" placeholder="Weight">
-        <button onclick="addData()">Add Weight</button>
-    </div>
+    <div class="overlay" id="overlay" style="display:none"></div>
 
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>Reading</th>
-                <th>Weight</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be added here -->
-        </tbody>
-    </table>
+    <div class="modal" id="popup" style="display:none">
+        <h2>Add Weight</h2>
 
-    <button onclick="calculateRegression()">Calibrate</button>
+        <label for="weight">Y value:</label>
+        <input type="number" id="weight" placeholder="weight"><br>
+        <button onclick="addData()">Add</button>
 
-    <div class="result" id="result">
-        <!-- Results will be displayed here -->
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Weight</th>
+                    <th>Reading</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be added here -->
+            </tbody>
+        </table>
+
+        <!-- This section for linear regression (calibration)-->
+        <div class="result" id="result">
+            <!-- Results will be displayed here -->
+        </div>
+
+        <button onclick="clearRegressionData()">Clear</button>
+
+        <button onclick="calculateRegression()">Calibrate</button>
+
+        <button onclick="closeCalibrate()">Close</button>
     </div>
 
     <script src="force.js"></script>
     <script src="timer.js"></script>
     <script src="calibrate.js"></script>
+    <script src="load_profile.js"></script>
+    <script src="load_storage.js"></script>
 </body>
 
 </html>

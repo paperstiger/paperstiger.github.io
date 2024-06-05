@@ -9,18 +9,31 @@ var show_force = true;
 
 // The polynomial fit is like zero point is 61571 and slope is 14565 per pound
 // weight = reading / slope + zero_point
-var zero_point = 0; // -4.425
-var slope = 1; // 14426.78
+var slope = 7848.99; // 14426.78
+var zero_point = 205722.4 / 7848.99; // -4.425
 
 initPlot();
 
 // Retrieve the font size from the CSS variable
 var fontSize = getComputedStyle(document.documentElement).getPropertyValue('font-size');
 
+// JavaScript to handle toggle switch
+document.getElementById('devmode_switch').addEventListener('change', function() {
+    dev_mode = this.checked;
+    console.log('Set dev mode to ', dev_mode);
+    if (dev_mode) {
+        document.getElementById("formula_display").style.display = 'block';
+    } else {
+        document.getElementById("formula_display").style.display = 'none';
+    }
+    localStorage.setItem('dev_mode', dev_mode);
+});
+
 document.getElementById('tare_button').addEventListener('click', () => {
     if (readings.length > 5) {
         tare_weight = readings.slice(-5).reduce(function (total, cur) { return total + Number(cur); }, 0);
         tare_weight = tare_weight / 5.0;
+        tare_weight = tare_weight / slope + zero_point;
         console.log("tare = ", tare_weight);
     } else {
         console.log("Not enough data to tare");
@@ -57,9 +70,7 @@ document.getElementById('connect').addEventListener('click', () => {
     
     if ('bluetooth' in navigator && 'setScreenDimEnabled' in navigator.bluetooth) {
         navigator.bluetooth.setScreenDimEnabled(true);
-        document.getElementById('dim_status').innerText="Set False";
     } else {
-        document.getElementById('dim_status').innerText="Not supported";
     }
 });
 
@@ -68,21 +79,9 @@ function handleData(event) {
     // let value = new TextDecoder().decode(event.target.value);
     // let force = readLong(event.target.value.buffer);
     let reading = event.target.value.getInt32()
-    console.log(reading)
-    force = value / slope + zero_point
-    // let force = Math.max(0, value / slope - zero_point);
-    // Sometimes reading has error, we reject it if force > 1000 lb
-    /*
-    if (force > 1000) {
-        if (readings.length > 0) {
-            force = readings[readings.length - 1]
-        } else {
-            force = 0;
-        }
-    }
-    */
-    readings.push(force);
-    // var currentTime = new Date().getTime();
+    readings.push(reading);
+    // console.log(reading)
+    // console.log('slope=', slope)
     var timeDifference = performance.now() - t0;
     times_in_seconds.push(Math.round(timeDifference / 10) / 100);
     if (readings.length > readingLength) {
@@ -162,7 +161,29 @@ function updatePlot() {
     if (readings.length < 2) {
         return;
     }
-    var processed = readings.map(function (v) { return v - tare_weight })
+    let processed = [];
+    for (let i = 0; i < readings.length; i++) {
+        let force = readings[i] / slope + zero_point - tare_weight;
+        if (dev_mode) {
+            processed.push(force);
+            continue;
+        }
+        // In non-dev mode, we do postprocess for error value.
+        if (force > 1000) {
+            if (processed.length == 0) {
+                continue;
+            } else {
+                processed.push(processed[processed.length - 1])
+            }
+        } else {
+            processed.push(force)
+        }
+    }
+    if (processed.length == 1) {
+        console.log("No valid data");
+        return;
+    }
+
     document.getElementById('latest_value').innerText = "Force = " + formatForce(processed[readings.length - 1]);
     var y_max = Math.max(1, Math.max(...processed));
     document.getElementById('max_value').innerText = "Max Force = " + formatForce(y_max);

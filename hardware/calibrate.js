@@ -1,6 +1,21 @@
 // For calibration.
 let data = [];
 
+// Hide calibration window on openup.
+closeCalibrate();
+
+READING_SCALE =10000;
+
+function openCalibrate() {
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closeCalibrate() {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
 function computeMean(array) {
     // Check if the array is not empty to avoid division by zero
     if (array.length === 0) {
@@ -26,7 +41,7 @@ function addData() {
         return;
     }
 
-    data.push([parseFloat(xValue), parseFloat(yValue)]);
+    data.push([parseFloat(yValue), parseFloat(xValue)]);
     updateTable();
     document.getElementById('weight').value = '';
 }
@@ -46,6 +61,12 @@ function updateTable() {
     });
 }
 
+function clearRegressionData() {
+    const tableBody = document.getElementById('data-table').querySelector('tbody');
+    tableBody.innerHTML = '';
+    data = [];
+}
+
 function calculateRegression() {
     if (data.length < 2) {
         alert('At least two data points are required to perform linear regression.');
@@ -56,21 +77,40 @@ function calculateRegression() {
     let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
 
     data.forEach(pair => {
+        console.log('x = ', pair[0],  'y = ', pair[1] / READING_SCALE)
         sumX += pair[0];
-        sumY += pair[1];
-        sumXY += pair[0] * pair[1];
+        sumY += pair[1] / READING_SCALE;
+        sumXY += pair[0] * pair[1] / READING_SCALE;
         sumX2 += pair[0] * pair[0];
     });
 
-    const slope_ = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    const intercept_ = (sumY - slope * sumX) / n;
+    const meanX = sumX / n;
+    const meanY = sumY / n;
 
-    slope = 1 / slope_;
-    zero_point = intercept_;
+    const slope_ = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept_ = (sumY - slope_ * sumX) / n;
+
+    let ssTot = 0, ssRes = 0;
+
+    data.forEach(pair => {
+        const predictedY = slope_ * pair[0] + intercept_;
+        console.log('x = ', pair[0], ' predy = ', predictedY, ' data = ', pair[1] / READING_SCALE)
+        ssTot += (pair[1] / READING_SCALE - meanY) ** 2;
+        ssRes += (pair[1] / READING_SCALE - predictedY) ** 2;
+    });
+
+    const r2 = 1 - (ssRes / ssTot);
+
+    slope = slope_ * READING_SCALE;
+    zero_point = -intercept_ / slope_;
 
     document.getElementById('result').innerHTML = `
-        <p>Slope (m): ${slope_.toFixed(4)}</p>
-        <p>Intercept (b): ${intercept_.toFixed(4)}</p>
-        <p>Equation: y = x / ${slope.toFixed(4)} + ${zero_point.toFixed(4)}</p>
+        <p>R^2 value: ${r2.toFixed(4)}</p>
+        <p>Equation: reading = weight * ${(READING_SCALE * slope_).toFixed(4)} + ${(READING_SCALE * intercept_).toFixed(4)}</p>
     `;
+
+    localStorage.setItem('slope', slope);
+    localStorage.setItem('zero_point', zero_point);
+
+    document.getElementById('formula_display').innerText = `weight = reading / ${slope.toFixed(4)} + ${zero_point.toFixed(4)}`
 }

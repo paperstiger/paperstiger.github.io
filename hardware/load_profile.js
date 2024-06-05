@@ -33,7 +33,7 @@ function updatePreset() {
 
     usePresetChoice(selectedValue);
 
-    console.log(slope)
-    console.log(zero_point)
+    console.log('load slope = ', slope)
+    console.log('load zero_point = ', zero_point)
     alert(`Load slope = ${slope.toFixed(4)} zero_point = ${zero_point.toFixed(4)}`)
 }

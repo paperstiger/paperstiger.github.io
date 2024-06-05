@@ -7,8 +7,7 @@ var t0 = performance.now();
 var dev_mode = false;
 var show_force = true;
 
-// The polynomial fit is like zero point is 61571 and slope is 14565 per pound
-// weight = reading / slope + zero_point
+// see load_profile.js for details. This value is for v1.
 var slope = 7848.99; // 14426.78
 var zero_point = 205722.4 / 7848.99; // -4.425
 

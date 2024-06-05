@@ -87,13 +87,13 @@ function calculateRegression() {
     const meanX = sumX / n;
     const meanY = sumY / n;
 
-    const slope_ = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    const intercept_ = (sumY - slope_ * sumX) / n;
+    const dy_dx = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - dy_dx * sumX) / n;
 
     let ssTot = 0, ssRes = 0;
 
     data.forEach(pair => {
-        const predictedY = slope_ * pair[0] + intercept_;
+        const predictedY = dy_dx * pair[0] + intercept;
         console.log('x = ', pair[0], ' predy = ', predictedY, ' data = ', pair[1] / READING_SCALE)
         ssTot += (pair[1] / READING_SCALE - meanY) ** 2;
         ssRes += (pair[1] / READING_SCALE - predictedY) ** 2;
@@ -101,12 +101,12 @@ function calculateRegression() {
 
     const r2 = 1 - (ssRes / ssTot);
 
-    slope = slope_ * READING_SCALE;
-    zero_point = -intercept_ / slope_;
+    slope = dy_dx * READING_SCALE;
+    zero_point = -intercept / dy_dx;
 
     document.getElementById('result').innerHTML = `
         <p>R^2 value: ${r2.toFixed(4)}</p>
-        <p>Equation: reading = weight * ${(READING_SCALE * slope_).toFixed(4)} + ${(READING_SCALE * intercept_).toFixed(4)}</p>
+        <p>Equation: reading = weight * ${(READING_SCALE * dy_dx).toFixed(4)} + ${(READING_SCALE * intercept).toFixed(4)}</p>
     `;
 
     localStorage.setItem('slope', slope);

@@ -14,11 +14,10 @@ async function onButtonClickRequest() {
         console.log('options = ', options)
         const device = await navigator.bluetooth.requestDevice(options);
         console.log(device);
-        addDebug(device);
+        addDebug(String(device));
         device.addEventListener('advertisementreceived', (event) => {
-            addDebug('manu data ', event.manufacturerData)
             event.manufacturerData.forEach((valueDataView, key) => {
-                console.log('Manufacturer', key, valueDataView);
+                addDebug('Manufacturer' + String(key) + String(valueDataView));
                 const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
                     return b.toString(16).padStart(2, '0');
                 }).join(' ');
@@ -27,7 +26,6 @@ async function onButtonClickRequest() {
                 document.getElementById("weight").innerText = "" + weight.weight + " " + weight.stable + " " + weight.unit;
             });
         });
-        console.log('added')
         await device.watchAdvertisements();
     } catch(error) {
         log('Argh! ' + error);
@@ -109,6 +107,7 @@ document.getElementById('debug_switch').addEventListener('change', function() {
 });
 
 dev_mode = true;
+addDebug("12:01");
 // let data = '0x020311ffffffffffffff002f01f4000225';
 // console.log(data.toString(16))
 // console.log(numberToHexArray(data))

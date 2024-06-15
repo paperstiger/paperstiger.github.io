@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Timer</title>
+    <title>WH Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,8 +61,15 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <button id="requestButton">Start Bluetooth</button>
+    </div>
+    <div id="app2">
+        <button id="scanButton">Start Scan</button>
+    </div>
+    <div><span id="weight">weight here</span></div>
+    <div><span id="data">manufacturer data</span></div>
 
-    <script src="training_timer_state_array.js"></script>
+    <script src="wh_scale.js"></script>
 </body>
 </html>

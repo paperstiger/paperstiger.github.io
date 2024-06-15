@@ -3,10 +3,13 @@
 
 <head>
     <title>ESP32 BLE Data</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body>
@@ -23,9 +26,12 @@
         <input type="checkbox" id="devmode_switch">
         <span class="slider">Dev Mode</span><span class="slider" id="formula_display" style="display:none">Placeholder</span>
     </label>
+    <!--
     <div id="timer">00:00:00</div>
     <button id="startPause">Start</button>
     <button id="reset">Reset</button>
+    -->
+    <div id="app"></div>
     <div>
         <h2 id='latest_value'></h2>
         <h2 id='max_value'></h2>
@@ -72,8 +78,9 @@
         <button onclick="closeCalibrate()">Close</button>
     </div>
 
+    <script src="training_timer_state_array.js"></script>
     <script src="force.js"></script>
-    <script src="timer.js"></script>
+    <!-- script src="timer.js"></script -->
     <script src="calibrate.js"></script>
     <script src="load_profile.js"></script>
     <script src="load_storage.js"></script>

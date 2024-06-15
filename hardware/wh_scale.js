@@ -50,10 +50,15 @@ async function onButtonClickScan() {
     }
 }
 
+function addDebug(str) {
+    document.getElementById('debug').innerText += str + '\n';
+}
+
 function dataToWeight(buffer) {
     WEIGHT_OFFSET = 10;
     STABLE_OFFSET = 14;
     const data = new Uint8Array(buffer);
+    addDebug(data);
     const weight = (data[WEIGHT_OFFSET] << 8) | data[WEIGHT_OFFSET + 1];
     const stable = (data[STABLE_OFFSET] & 0xf0) >> 4;
     const unit = data[STABLE_OFFSET] & 0x0f;

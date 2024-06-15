@@ -32,9 +32,6 @@
         button {
             margin: 5px;
         }
-        input {
-            width: 50px;
-        }
         .modal {
             display: none;
             position: fixed;
@@ -69,7 +66,12 @@
     </div>
     <div><span id="weight">weight here</span></div>
     <div><span id="data">manufacturer data</span></div>
-    <div><span id="debug">debug info data</span></div>
+    <div id="debug">
+        <button id="clearDebug">Clear Debug</button>
+        <input type="checkbox" id="debug_switch">
+        <span class="slider">Dev Mode</span>
+        <div><span id="debug">debug info data</span></div>
+    </div>
 
     <script src="wh_scale.js"></script>
 </body>

@@ -1,5 +1,7 @@
 const log = console.log;
 
+var dev_mode = false;
+
 async function onButtonClickRequest() {
     try {
         let filters = [];
@@ -54,7 +56,6 @@ function dataToWeight(buffer) {
     WEIGHT_OFFSET = 10;
     STABLE_OFFSET = 14;
     const data = new Uint8Array(buffer);
-    addDebug(data)
     const weight = (data[WEIGHT_OFFSET] << 8) | data[WEIGHT_OFFSET + 1];
     const stable = (data[STABLE_OFFSET] & 0xf0) >> 4;
     const unit = data[STABLE_OFFSET] & 0x0f;
@@ -65,12 +66,13 @@ function dataToWeight(buffer) {
         unit,
     };
 
-    addDebug("Weight Update:", weightRecord);
     return weightRecord;
 }
 
 function addDebug(str) {
-    document.getElementById("debug").innerText = str + "\n" + document.getElementById("debug").innerText;
+    if (dev_mode) {
+        document.getElementById("debug").innerText = str + "\n" + document.getElementById("debug").innerText;
+    }
 }
 
 function numberToHexArray(number) {
@@ -87,6 +89,13 @@ function numberToHexArray(number) {
 // document.getElementById('startButton').addEventListener('click', onButtonClickScan);
 document.getElementById('requestButton').addEventListener('click', onButtonClickRequest);
 document.getElementById('scanButton').addEventListener('click', onButtonClickScan);
+document.getElementById('clearDebug').addEventListener('click', () => {
+    document.getElementById("debug").innerText = "";
+});
+
+document.getElementById('debug_switch').addEventListener('change', function() {
+    dev_mode = this.checked;
+});
 
 addDebug("ready");
 // let data = '0x020311ffffffffffffff002f01f4000225';

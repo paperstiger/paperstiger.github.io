@@ -16,6 +16,7 @@ async function onButtonClickRequest() {
         console.log(device);
         addDebug(String(device));
         device.addEventListener('advertisementreceived', (event) => {
+            addDebug(String(Object.keys(event)));
             event.manufacturerData.forEach((valueDataView, key) => {
                 addDebug('Manufacturer' + String(key) + String(valueDataView));
                 const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
@@ -107,7 +108,7 @@ document.getElementById('debug_switch').addEventListener('change', function() {
 });
 
 dev_mode = true;
-addDebug("12:01");
+addDebug("12:22");
 // let data = '0x020311ffffffffffffff002f01f4000225';
 // console.log(data.toString(16))
 // console.log(numberToHexArray(data))

@@ -40,7 +40,6 @@ async function onButtonClickScan() {
                 const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
                     return b.toString(16).padStart(2, '0');
                 }).join(' ');
-                addDebug(valueDataView);
                 document.getElementById("data").innerText = hexString;
                 weight = dataToWeight(valueDataView.buffer);
                 document.getElementById("weight").innerText = "" + weight.weight + " " + weight.stable + " " + weight.unit;
@@ -51,16 +50,11 @@ async function onButtonClickScan() {
     }
 }
 
-function addDebug(str) {
-    document.getElementById('debug').innerText += str + '\n';
-}
-
 function dataToWeight(buffer) {
     WEIGHT_OFFSET = 10;
     STABLE_OFFSET = 14;
-    addDebug(buffer)
     const data = new Uint8Array(buffer);
-    addDebug(data);
+    addDebug(data)
     const weight = (data[WEIGHT_OFFSET] << 8) | data[WEIGHT_OFFSET + 1];
     const stable = (data[STABLE_OFFSET] & 0xf0) >> 4;
     const unit = data[STABLE_OFFSET] & 0x0f;
@@ -71,8 +65,12 @@ function dataToWeight(buffer) {
         unit,
     };
 
-    console.log("Weight Update:", weightRecord);
+    addDebug("Weight Update:", weightRecord);
     return weightRecord;
+}
+
+function addDebug(str) {
+    document.getElementById("debug").innerText = str + "\n" + document.getElementById("debug").innerText;
 }
 
 function numberToHexArray(number) {
@@ -90,5 +88,11 @@ function numberToHexArray(number) {
 document.getElementById('requestButton').addEventListener('click', onButtonClickRequest);
 document.getElementById('scanButton').addEventListener('click', onButtonClickScan);
 
-addDebug("haha")
-addDebug([1, 2, 3])
+addDebug("ready");
+// let data = '0x020311ffffffffffffff002f01f4000225';
+// console.log(data.toString(16))
+// console.log(numberToHexArray(data))
+// const WEIGHT_OFFSET = 10;
+// const STABLE_OFFSET = 14;
+// console.log(data[WEIGHT_OFFSET])
+// console.log(data[STABLE_OFFSET])

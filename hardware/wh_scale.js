@@ -14,8 +14,9 @@ async function onButtonClickRequest() {
         console.log('options = ', options)
         const device = await navigator.bluetooth.requestDevice(options);
         console.log(device);
+        addDebug(device);
         device.addEventListener('advertisementreceived', (event) => {
-            console.log(event)
+            addDebug(event)
             event.manufacturerData.forEach((valueDataView, key) => {
                 console.log('Manufacturer', key, valueDataView);
                 const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
@@ -103,7 +104,8 @@ document.getElementById('debug_switch').addEventListener('change', function() {
     dev_mode = this.checked;
 });
 
-addDebug("ready");
+dev_mode = true;
+addDebug("ready2");
 // let data = '0x020311ffffffffffffff002f01f4000225';
 // console.log(data.toString(16))
 // console.log(numberToHexArray(data))

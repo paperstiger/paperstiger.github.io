@@ -18,6 +18,12 @@ async function onButtonClickRequest() {
             console.log(event)
             event.manufacturerData.forEach((valueDataView, key) => {
                 console.log('Manufacturer', key, valueDataView);
+                const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
+                    return b.toString(16).padStart(2, '0');
+                }).join(' ');
+                document.getElementById("data").innerText = hexString;
+                weight = dataToWeight(valueDataView.buffer);
+                document.getElementById("weight").innerText = "" + weight.weight + " " + weight.stable + " " + weight.unit;
             });
         });
         console.log('added')

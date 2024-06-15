@@ -16,7 +16,7 @@ async function onButtonClickRequest() {
         console.log(device);
         addDebug(device);
         device.addEventListener('advertisementreceived', (event) => {
-            addDebug(event)
+            addDebug('manu data ', event.manufacturerData)
             event.manufacturerData.forEach((valueDataView, key) => {
                 console.log('Manufacturer', key, valueDataView);
                 const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
@@ -78,7 +78,11 @@ function dataToWeight(buffer) {
 
 function addDebug(str) {
     if (dev_mode) {
-        document.getElementById("debug").innerText = str + "\n" + document.getElementById("debug").innerText;
+        const consoleWindow = document.getElementById('debug');
+        const messageElement = document.createElement('div');
+        messageElement.textContent = str;
+        consoleWindow.appendChild(messageElement);
+        consoleWindow.scrollTop = consoleWindow.scrollHeight;
     }
 }
 
@@ -105,7 +109,6 @@ document.getElementById('debug_switch').addEventListener('change', function() {
 });
 
 dev_mode = true;
-addDebug("ready2");
 // let data = '0x020311ffffffffffffff002f01f4000225';
 // console.log(data.toString(16))
 // console.log(numberToHexArray(data))

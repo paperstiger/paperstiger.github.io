@@ -50,9 +50,10 @@ async function onButtonClickScan() {
     }
 }
 
-function dataToWeight() {
+function dataToWeight(buffer) {
     WEIGHT_OFFSET = 10;
     STABLE_OFFSET = 14;
+    const data = new Uint8Array(buffer);
     const weight = (data[WEIGHT_OFFSET] << 8) | data[WEIGHT_OFFSET + 1];
     const stable = (data[STABLE_OFFSET] & 0xf0) >> 4;
     const unit = data[STABLE_OFFSET] & 0x0f;
@@ -65,6 +66,17 @@ function dataToWeight() {
 
     console.log("Weight Update:", weightRecord);
     return weightRecord;
+}
+
+function numberToHexArray(number) {
+    let arr = []
+    while (number != 0) {
+        arr.push(parseInt(number && 0xff, 16));
+        number = number >> 8;
+        console.log(number)
+    }
+    arr.reverse()
+    return arr;
 }
 
 // document.getElementById('startButton').addEventListener('click', onButtonClickScan);

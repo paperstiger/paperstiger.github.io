@@ -13,7 +13,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
                 const value = event.target.value;
                 const intval = value.getInt32(0, true)
                 // Display the current time
-                document.getElementById('timeDisplay').textContent = `Current Time: ${currentTime}`;
+                document.getElementById('timeDisplay').textContent = `Current Time: ${intval}`;
             });
         });
     })
